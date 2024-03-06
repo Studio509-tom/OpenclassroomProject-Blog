@@ -17,11 +17,19 @@ use Application\Controllers\HomepageController;
 
 try{
     if (isset($_GET['action']) && $_GET['action'] !== ''){
-
+        if ($_GET['action'] === 'post') {
+           
+        }    
+        
+        else {
+            throw new Exception("La page que vous recherchez n'existe pas.");
+        }
     }
     else{
         (new HomepageController())->homepage($twig);
     }
-}catch(\Exception $e){
-
+}catch(Exception $e){
+    echo'tototo';
+    $errorMessage = $e->getMessage();
+    echo $twig->render('error.html.twig', [ 'error'=>$errorMessage , 'title' => 'Erreur']); 
 }

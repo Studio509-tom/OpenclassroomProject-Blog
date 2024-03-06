@@ -27,7 +27,11 @@
 }
 .footer{
     background: rgb(101, 155, 182);
-    position: relative;
+    position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+.error{
+    font-size: 100px;
 }
