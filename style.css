@@ -1,0 +1,33 @@
+
+.banner{
+    background-image: url("./files/istockphoto-1644335160-1024x1024.jpg");
+    height: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0px -380px;
+}
+.slogan{
+    color: white;
+    font-size: 55px;
+    font-family: monospace;
+    font-weight: bold;
+}
+.slogan-row{
+    height: 100% !important;
+    justify-content: center;
+    align-items: center;
+}
+.parent-nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.logo{
+    height: 150px;
+}
+.footer{
+    background: rgb(101, 155, 182);
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
