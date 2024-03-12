@@ -17,4 +17,24 @@ class UserModel {
         $affectedLines = $statement->execute([$name, $firstname, $email , $password_hash]);
         return ($affectedLines > 0);
     }
+    public function getUser($email){
+        $statement = $this->connection->getConnection()->prepare(
+            'SELECT * FROM users WHERE email = ?'
+        );
+        $statement->execute([$email]);
+        //Utilisation du fetch pour voir chacune des donné de notre tableau
+        $row = $statement->fetch();
+        if($row === false) {
+            return null;
+        }
+        $user = new UserEntity;
+        $user->id = $row['user_id'];
+        $user->name = $row['name'];
+        $user->firstname = $row['firstname'];
+        $user->email = $row['email'];
+        $user->password = $row['password'];
+
+        return $user;
+    }
+    
 }
