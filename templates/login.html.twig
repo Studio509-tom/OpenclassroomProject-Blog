@@ -1,0 +1,35 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+	<div class="form-contact">
+		<div class="container ">
+			<div class="row ">
+				<div class=" my-5 col-12 text-center">
+					<h2>Je crée mon compte</h2>
+				</div>
+				<form class="form-login" action="index.php?action=formLogin" method="post">
+					{% if error %}
+						<p class="error-form">L'adresse email ou le mot de passe est incorrect</p>
+					{% endif %}
+
+					<div class="row">
+						<div class="form-group col-md-12">
+							<label for="inputEmail4">Email</label>
+							<input type="email" class="form-control inputEmail4" name="input-email" id="input-email" placeholder="Email"/>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="form-group col-md-12">
+							<label for="inputPassword">Mots de passe</label>
+							<input class="form-control inputPassword" name="inputPassword" id="inputPassword" placeholder="mots de passe"/>
+						</div>
+					</div>
+					<div class="row">
+
+						<button type="submit" class=" col-3 btn btn-primary btn-login">Envoyer</button>
+					</diV</form>
+
+				</div>
+			</div>
+		</div>
+	{% endblock %}

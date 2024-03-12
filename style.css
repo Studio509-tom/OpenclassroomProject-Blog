@@ -27,11 +27,24 @@
 }
 .footer{
     background: rgb(101, 155, 182);
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
+    
 }
-
+.form-contact{
+    margin-bottom: 150px;
+}
 .error{
     font-size: 100px;
+}
+.error-form{
+    color: rgb(243, 37, 1);
+}
+.form-login{
+    width: 30% !important;
+    margin: auto !important;
+}
+.btn-login{
+    margin: 4em auto  !important;
 }

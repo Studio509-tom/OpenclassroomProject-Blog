@@ -9,25 +9,49 @@
 				</div>
 				<form action="index.php?action=formRegister" method="post">
 					<div class="row">
+						{% if hacking %}
+							<p class="error-form">Attention certain charactère ne sont pas autorisée "<,>"</p>
+							</p>
+							<p class="error-form">Le Nom et Prénom ne peuvent contenir que des lettres majuscules ou minuscules
+							</p>
+						{% endif %}
+
 						<div class="form-group col-md-6">
 							<label for="input-name">Nom</label>
-							<input type="text" class="form-control input-name" name="input-name" id="input-name" placeholder="Nom"/>
+							<input type="text" class="form-control input-name" name="input-name" id="input-name" placeholder="Nom" / value="{{name}}">
+							{% if name == "" and error %}
+								<p class="error-form">Veuillez saisir un Nom</p>
+							{% endif %}
+
 						</div>
 						<div class="form-group col-md-6">
 							<label for="input-firstname">Prénom</label>
-							<input type="text" class="form-control input-firstname" name="input-firstname" id="input-firstname" placeholder="Prénom"/>
+							<input type="text" class="form-control input-firstname" name="input-firstname" id="input-firstname" placeholder="Prénom" value="{{firstname}}"/>
+							{% if (firstname == ""  and error) %}
+								<p class="error-form">Veuillez saisir un Prénom</p>
+							{% endif %}
 						</div>
 						<div class="form-group col-md-12">
 							<label for="inputEmail4">Email</label>
-							<input type="email" class="form-control inputEmail4" name="input-email" id="input-email" placeholder="Email"/>
+							<input type="email" class="form-control inputEmail4" name="input-email" id="input-email" placeholder="Email" value="{{email}}"/>
+							{% if (email == "" and error) %}
+								<p class="error-form">Veuillez saisir une Adresse Mail valide</p>
+							{% elseif exist %}
+								<p class="error-form">Cette adresse email est déjà utilisée</p>
+							{% endif %}
 						</div>
 						<div class="form-group col-md-12">
 							<label for="inputPassword">Mots de passe</label>
-							<input class="form-control inputPassword" name="inputPassword" id="inputPassword" placeholder="mots de passe"/>
+							<input class="form-control inputPassword" name="inputPassword" id="inputPassword" placeholder="mots de passe" value="{{password}}"/>
+							{% if password == "" and error %}
+								<p class="error-form">Veuillez saisir un Nom</p>
+							{% endif %}
 						</div>
 
 					</div>
-					<button type="submit">Submit</button>
+					<div class="row text-center">
+						<button type="submit" class="col-1 btn btn-primary btn-login">Envoyer</button>
+					</div>
 				</form>
 
 			</div>
