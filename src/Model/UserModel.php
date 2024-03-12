@@ -10,7 +10,7 @@ class UserModel {
     public function __construct(){
         $this->connection = new DatabaseConnection();
     }
-    public function addUser($name , $firstname , $email , $password_hash){
+    public function addUser($name , $firstname , $email , $password_hash ){
         $statement = $this->connection->getConnection()->prepare(
             'INSERT INTO users( name, firstname , email , password) VALUES(?, ?, ?, ?)'
         );
@@ -35,6 +35,9 @@ class UserModel {
         $user->password = $row['password'];
 
         return $user;
+    }
+    public function login(){
+
     }
     
 }

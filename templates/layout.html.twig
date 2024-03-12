@@ -19,12 +19,19 @@
 					<li class="nav-item">
 						<a class="nav-link" href="#">Link</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="index.php?action=login">Connexion</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="index.php?action=register">S'enregistrer</a>
-					</li>
+					{% if connect %}
+						<p class="name">Bonjour
+							{{user.firstname}}</p>
+						<a href="index.php?action=disconnect">Déconnexion</a>
+					{% else %}
+
+						<li class="nav-item">
+							<a class="nav-link" href="index.php?action=login">Connexion</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="index.php?action=register">S'enregistrer</a>
+						</li>
+					{% endif %}
 				</ul>
 			</div>
 		</div>

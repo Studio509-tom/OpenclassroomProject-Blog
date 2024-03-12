@@ -48,6 +48,12 @@ class UserController extends ParentController
             // Si email n'est pas en base de données
             if ($email_check == null) {
                 $userModel->addUser($name, $firstname, $email, $password_hash);
+                $user = $userModel->getUser($email);
+                $user->password = null;
+                $_SESSION['user'] = $user;
+                header('Location: index.php');
+
+                echo $this->twig->render("homepage.html.twig", ['title' => 'Accueil', "user" => $user, 'connect' => true]);
             } else {
                 $twig = $this->twig;
                 echo $twig->render("register.html.twig", ['title' => 'Enregistrement', 'name' => $input["input-name"], 'firstname' => $input["input-firstname"], 'email' => $input["input-email"], 'password' => $input["inputPassword"], 'exist' => true]);
@@ -71,11 +77,13 @@ class UserController extends ParentController
 
                 if ($user == null) {
                     echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
-                }
-                $checked = password_verify($_POST['inputPassword'], $user->password);
-                if ($checked) {
-                    $user->password = null;
-                    echo $this->twig->render('homepage.html.twig', ['title' => 'Accueil', 'user' => $user]);
+                } else {
+                    $checked = password_verify($_POST['inputPassword'], $user->password);
+                    if ($checked) {
+                        $user->password = null;
+                        $_SESSION['user'] = $user;
+                        header('Location: index.php');
+                    }
                 }
             }
         } else {
