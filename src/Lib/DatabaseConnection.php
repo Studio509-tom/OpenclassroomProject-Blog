@@ -9,7 +9,6 @@ class DatabaseConnection
         if ($this->database === null) {
             $this->database = new \PDO('mysql:host=localhost;dbname=blog_ocr_db;charset=utf8', 'root', '');
         }
-        var_dump($this->database);
         return $this->database;
     }
 }
