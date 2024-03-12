@@ -1,9 +1,14 @@
 <?php
+
 namespace Application\Controllers;
 
-class HomepageController
+use Application\ParentController;
+
+class HomepageController extends ParentController
 {
-    public function homepage($twig){
-       echo $twig->render("homepage.html.twig" ,['title' => 'Accueil']);
+
+    public function homepage()
+    {
+        echo $this->twig->render("homepage.html.twig", ['title' => 'Accueil']);
     }
 }
