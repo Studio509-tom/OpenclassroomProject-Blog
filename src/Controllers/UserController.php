@@ -20,8 +20,9 @@ class UserController extends ParentController
         echo $twig->render("login.html.twig", ['title' => 'Enregistrement']);
     }
     // Traitement du formulaire d'enregistrement
-    public function register($input)
+    public function register()
     {
+        $input = $_POST;
         $name = null;
         $firstname = null;
         $email = null;
@@ -52,8 +53,6 @@ class UserController extends ParentController
                 $user->password = null;
                 $_SESSION['user'] = $user;
                 header('Location: index.php');
-
-                echo $this->twig->render("homepage.html.twig", ['title' => 'Accueil', "user" => $user, 'connect' => true]);
             } else {
                 $twig = $this->twig;
                 echo $twig->render("register.html.twig", ['title' => 'Enregistrement', 'name' => $input["input-name"], 'firstname' => $input["input-firstname"], 'email' => $input["input-email"], 'password' => $input["inputPassword"], 'exist' => true]);

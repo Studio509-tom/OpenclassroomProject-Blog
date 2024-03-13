@@ -31,11 +31,10 @@ try {
                 (new HomepageController())->homepage($session_user);
                 break;
             case 'formRegister':
-                $input = null;
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $input = $_POST;
+                if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                    header('Location: index.php?action=register');
                 }
-                (new UserController())->register($input);
+                (new UserController())->register();
                 break;
             case 'register':
                 (new UserController())->registerPage();
@@ -46,7 +45,6 @@ try {
             case 'formLogin':
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $input = $_POST;
                 }
                 if (!empty($session_user)) {
                     (new HomepageController())->homepage($session_user);
@@ -57,8 +55,8 @@ try {
             default:
                 throw new Exception("La page que vous recherchez n'existe pas.");
         }
-        
     } else {
+        
         (new HomepageController())->homepage($session_user);
     }
 } catch (Exception $e) {
