@@ -3,7 +3,12 @@ namespace Application\Lib;
 class DatabaseConnection
 {
     public ?\PDO $database = null;
-
+    
+    /**
+     * getConnection
+     *
+     * @return PDO
+     */
     public function getConnection(): \PDO
     {
         if ($this->database === null) {
