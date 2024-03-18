@@ -11,17 +11,15 @@ spl_autoload_register(function ($fqcn) {
     require_once($path);
 });
 
+use Application\Controllers\ArticleController;
 use Application\Controllers\HomepageController;
 use Application\Controllers\UserController;
 
 session_start();
-// var_dump($_GET['action']);
-// var_dump($_GET);
 $session_user = null;
 if (isset($_SESSION['user'])) {
     $session_user = $_SESSION['user'];
 }
-
 try {
     if (isset($_GET['action']) && $_GET['action'] !== '') {
         switch ($_GET['action']) {
@@ -43,20 +41,29 @@ try {
                 (new UserController())->loginPage();
                 break;
             case 'formLogin':
-                $input = null;
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                }
                 if (!empty($session_user)) {
                     (new HomepageController())->homepage($session_user);
                 } else {
-                    (new UserController())->login($input);
+                    (new UserController())->login();
+                }
+                break;
+            case 'createArticle':
+                (new ArticleController())->addArticlePage($session_user);
+                break;
+            case 'articles':
+                (new ArticleController())->articlesPage($session_user);
+                break;
+            case 'article':
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    $id = $_GET['id'];
+                    (new ArticleController())->articlePage($session_user , $id);
                 }
                 break;
             default:
                 throw new Exception("La page que vous recherchez n'existe pas.");
         }
     } else {
-        
+
         (new HomepageController())->homepage($session_user);
     }
 } catch (Exception $e) {
