@@ -17,12 +17,14 @@
 						<a class="nav-link active" href="index.php">Accueil</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Link</a>
+						<a class="nav-link" href="index.php?action=articles">Articles</a>
 					</li>
 					{% if connect %}
+						<li class="nav-item">
+							<a class="nav-link" href="index.php?action=createArticle">Ajouter un Article</a>
+						</li>
 						<p class="name">Bonjour
 							{{user.firstname}}</p>
-						<p class="name">{{user.email}}</p>
 						<a href="index.php?action=disconnect">Déconnexion</a>
 					{% else %}
 
