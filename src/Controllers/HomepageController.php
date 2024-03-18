@@ -6,7 +6,13 @@ use Application\ParentController;
 
 class HomepageController extends ParentController
 {
-
+        
+    /**
+     * Retourne la page d'accueil
+     *
+     * @param  obj $session_user 
+     * @return void
+     */
     public function homepage($session_user)
     {
         $user = null;
@@ -15,7 +21,6 @@ class HomepageController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-        var_dump($_SESSION['user']);
         echo $this->twig->render("homepage.html.twig", ['title' => 'Accueil', 'user' => $user, 'connect' => $connect]);
         
 
