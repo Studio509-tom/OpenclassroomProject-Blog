@@ -1,11 +1,12 @@
 <?php
 namespace Application\Entities;
 
+
 class UserEntity {
-    public $id; 
-    public $name;
-    public $firstname;
-    public $email;
-    public $password;
+    public string $id; 
+    public string $name;
+    public string $firstname;
+    public string $email;
+    public string $password;
     
 }
