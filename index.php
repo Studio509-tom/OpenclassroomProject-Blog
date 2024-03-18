@@ -56,7 +56,19 @@ try {
             case 'article':
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     $id = $_GET['id'];
-                    (new ArticleController())->articlePage($session_user , $id);
+                    (new ArticleController())->articlePage($session_user, $id);
+                }
+                break;
+            case 'modifyArticlePage':
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    $id = $_GET['id'];
+                    (new ArticleController())->modifyPage($session_user, $id);
+                }
+                break;
+            case 'modify-article':
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    $id = $_GET['id'];
+                    (new ArticleController())->modifyArticle($session_user, $id);
                 }
                 break;
             default:

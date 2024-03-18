@@ -37,6 +37,28 @@ class ArticleModel
         $affectedLines = $statement->execute([$title, $chapo, $content, $author, $date]);
         return ($affectedLines > 0);
     }
+    
+    /**
+     * modifyArticle
+     *
+     * @param  string $title
+     * @param  string $chapo
+     * @param  string $content
+     * @param  string $date
+     * @param  string $id
+     * @return bool
+     */
+    public function modifyArticle(string $title,string $chapo,string $content ,string $date ,string $id): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'UPDATE articles SET title = ?, chapo = ?, content = ?, date_creation = ? WHERE id = ?'
+        );
+        $affectedLines = $statement->execute([$title, $chapo, $content, $date , $id]);
+
+        return ($affectedLines > 0);
+        
+    }
+
     /**
      * getArticles
      *
@@ -76,9 +98,9 @@ class ArticleModel
      * getArticle
      *
      * @param  string $id
-     * @return array
+     * @return object
      */
-    public function getArticle(string $id)
+    public function getArticle(string $id):object
     {
         $statement = $this->connection->getConnection()->prepare(
             "SELECT * , DATE_FORMAT(date_creation, '%d/%m/%Y %H:%i:%s') AS date_creation
@@ -108,7 +130,8 @@ class ArticleModel
         $article->content = $row['content'];
         $article->author = $user;
         $article->date = $row['date_creation'];
-        
+
         return $article;
     }
+
 }

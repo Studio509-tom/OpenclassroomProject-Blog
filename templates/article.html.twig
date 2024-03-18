@@ -3,15 +3,22 @@
 {% block content %}
 	<div class="container">
 		<div class="row">
-            <div class="col-12 ">
-                <h1 class="title-article">{{article.title}}</h1>
-            </div>
-            <div class="col-12 ">
-                <h2 class="chapo-article">{{article.chapo}}</h2>
-            </div>
+			<div class="col-12 ">
+				<h1 class="title-article">{{article.title}}</h1>
+			</div>
+			<div class="col-12 ">
+				<h2 class="chapo-article">{{article.chapo}}</h2>
+			</div>
+			<div class="col-12">
+				<p class="content-article">{{article.content}}</p>
+			</div>
             <div class="col-12">
-                <p class="content-article">{{article.content}}</p>
-            </div>
-        </div>
+				<p class="modify-article"> modifié le {{article.date}}</p>
+			</div>
+			{% if user.id == article.author.id %}
+				<a href="index.php?action=modifyArticlePage&id={{article.id}}">Modifier</a>
+			{% endif %}
+
+		</div>
 	</div>
 {% endblock %}

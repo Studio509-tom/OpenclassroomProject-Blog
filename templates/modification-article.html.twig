@@ -1,0 +1,39 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+	<div class="form-article">
+		<div class="container ">
+			<form action="index.php?action=modify-article&id={{article.id}}" method="post">
+				<div class="row">
+					<div class="col-12 text-center">
+						<h1>Modification de l'article</h1>
+					</div>
+
+					<div class="form-group col-md-12">
+						<label for="input-title">Titre</label>
+						<input type="text" class="form-control input-title" name="input-title" id="input-title" placeholder="Titre" value="{{article.title}}">
+						{% if article.title == "" and error %}
+							<p class="error-form">Veuillez saisir un Titre</p>
+						{% endif %}
+					</div>
+					<div class="form-group col-md-12">
+						<label for="input-chapo">Chapô</label>
+						<input type="text" class="form-control input-chapo" name="input-chapo" id="input-chapo" placeholder="Chapô" value="{{article.chapo}}"/>
+						{% if article.chapo == "" and error %}
+							<p class="error-form">Veuillez saisir un court résumé</p>
+						{% endif %}
+					</div>
+					<div class="form-group col-md-12">
+						<label for="input-content">Contenu</label>
+						<input type="text" class="form-control input-content" name="input-content" id="input-content" placeholder="Contenu" value="{{article.content}}"/>
+						{% if article.content == "" and error %}
+							<p class="error-form">Veuillez saisir le contenu de votre article</p>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row text-center">
+					<button type="submit" class="col-1 btn btn-primary btn-login">Envoyer</button>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}
