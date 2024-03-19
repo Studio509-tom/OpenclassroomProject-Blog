@@ -71,6 +71,12 @@ try {
                     (new ArticleController())->modifyArticle($session_user, $id);
                 }
                 break;
+            case 'delete':
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    $id = $_GET['id'];
+                    (new ArticleController())->deleteArticle($session_user, $id);
+                }
+                break;
             default:
                 throw new Exception("La page que vous recherchez n'existe pas.");
         }
