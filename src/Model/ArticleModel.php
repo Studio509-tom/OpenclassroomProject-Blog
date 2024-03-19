@@ -37,7 +37,7 @@ class ArticleModel
         $affectedLines = $statement->execute([$title, $chapo, $content, $author, $date]);
         return ($affectedLines > 0);
     }
-    
+
     /**
      * modifyArticle
      *
@@ -48,16 +48,33 @@ class ArticleModel
      * @param  string $id
      * @return bool
      */
-    public function modifyArticle(string $title,string $chapo,string $content ,string $date ,string $id): bool
+    public function modifyArticle(string $title, string $chapo, string $content, string $date, string $id): bool
     {
         $statement = $this->connection->getConnection()->prepare(
             'UPDATE articles SET title = ?, chapo = ?, content = ?, date_creation = ? WHERE id = ?'
         );
-        $affectedLines = $statement->execute([$title, $chapo, $content, $date , $id]);
+        $affectedLines = $statement->execute([$title, $chapo, $content, $date, $id]);
 
         return ($affectedLines > 0);
-        
     }
+    
+    /**
+     * deleteArticle
+     *
+     * @param  mixed $id
+     * @return bool
+     */
+    public function deleteArticle(string $id): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'DELETE FROM articles WHERE id = ?'
+
+        );
+        $affectedLines = $statement->execute([$id]);
+
+        return ($affectedLines > 0);
+    }
+
 
     /**
      * getArticles
@@ -93,14 +110,14 @@ class ArticleModel
             $articles[$article->id] = $article;
         }
         return $articles;
-    }    
+    }
     /**
      * getArticle
      *
      * @param  string $id
      * @return object
      */
-    public function getArticle(string $id):object
+    public function getArticle(string $id): object
     {
         $statement = $this->connection->getConnection()->prepare(
             "SELECT * , DATE_FORMAT(date_creation, '%d/%m/%Y %H:%i:%s') AS date_creation
@@ -108,9 +125,9 @@ class ArticleModel
             JOIN users ON (author = user_id)
             WHERE id = ?
             "
-            
+
         );
-        var_dump($id);
+        // var_dump($id);
         $statement->execute([$id]);
         //Utilisation du fetch pour voir chacune des donné de notre tableau
         $row = $statement->fetch();
@@ -133,5 +150,4 @@ class ArticleModel
 
         return $article;
     }
-
 }
