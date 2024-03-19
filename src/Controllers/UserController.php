@@ -96,7 +96,7 @@ class UserController extends ParentController
                     $email = $input['input-email'];
                     $user_model = new UserModel();
                     $user = $user_model->getUser($email);
-                    var_dump($user);
+                    // var_dump($user);
                     if ($user == null) {
                         echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
                     } else {
