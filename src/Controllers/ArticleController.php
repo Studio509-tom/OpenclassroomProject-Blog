@@ -11,6 +11,7 @@ class ArticleController extends ParentController
     /**
      * addArticlePage
      *
+     * @param  mixed $session_user
      * @return void
      */
     public function addArticlePage($session_user)
@@ -23,7 +24,6 @@ class ArticleController extends ParentController
         }
         echo $this->twig->render("create-article.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect]);
     }
-
 
 
     /**
@@ -43,7 +43,7 @@ class ArticleController extends ParentController
         $articles = $articleModel->getArticles();
         echo $this->twig->render("articles.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect, 'articles' => $articles]);
     }
-    
+
     /**
      * modifyArticle
      *
@@ -51,7 +51,7 @@ class ArticleController extends ParentController
      * @param  string $id
      * @return void
      */
-    public function modifyArticle($session_user,string $id)
+    public function modifyArticle($session_user, string $id)
     {
         $input = $_POST;
         $user = null;
@@ -74,16 +74,44 @@ class ArticleController extends ParentController
                         $date_time_zone = new \DateTimeZone('Europe/Paris');
                         $date = new \DateTime('now', $date_time_zone);
                         $articleModel = new ArticleModel();
-                        $success = $articleModel->modifyArticle($title, $chapo, $content ,$date->format("Y/m/d H:i:s"),$id);
-                        if(!$success) {
+                        $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $id);
+                        if (!$success) {
                             throw new \Exception('Une erreur est surevenu');
-                        }else {
+                        } else {
                             header('Location: index.php?action=article&id=' . $id);
                         }
                     }
                 }
             } else {
                 echo $this->twig->render("modify-article.html.twig", ['title' => "Article", "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
+            }
+        }
+    }
+
+    /**
+     * deleteArticle
+     *
+     * @param  mixed $session_user
+     * @param  string $id
+     * @return void
+     */
+    public function deleteArticle($session_user, string $id)
+    {
+        $user = null;
+        $connect = false;
+        if ($session_user !== null) {
+            $user = $session_user;
+            $connect = true;
+        }
+        $articleModel = new ArticleModel();
+        $article = $articleModel->getArticle($id);
+        if ($user->id == $article->author->id) {
+            $article_model = new ArticleModel();
+            $success = $article_model->deleteArticle($id);
+            if (!$success) {
+                throw new \Exception('Une erreur est surevenu');
+            } else {
+                header('Location: index.php?action=articles');
             }
         }
     }
