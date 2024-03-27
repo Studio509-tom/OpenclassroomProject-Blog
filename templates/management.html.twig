@@ -1,0 +1,21 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+	<div class="container container-management mt-5">
+		<div class="row text-center  ">
+			<div class="col-2 nav-management">
+				<a href="index.php?action=management-user">Utilisateurs</a>
+			</div>
+			<div class="col-2 nav-management">
+				<a href="index.php?action=management-articles">Articles</a>
+			</div>
+		</div>
+		<div class="row management-text-parent">
+			<div class="col-12 management-text text-center">
+				<h1>Bienvenue sur le panneau de gestion</h1>
+				<p>Depuis cette interface reserver au administrateur vous aurez la possibilité de géré les articles ainsi que les utilisateurs du site </p>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

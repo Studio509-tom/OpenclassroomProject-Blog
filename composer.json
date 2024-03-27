@@ -1,16 +1,4 @@
 {
-    "name": "tom/blog",
-    "autoload": {
-        "psr-4": {
-            "Tom\\Blog\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Tom Delva",
-            "email": "tomtfc8200@gmail.com"
-        }
-    ],
     "require": {
         "twig/twig": "^1.0"
     }

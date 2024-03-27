@@ -30,7 +30,6 @@ class ArticleModel
      */
     public function addArticle(string $title, string $chapo, string $content, int $author, string $date): bool
     {
-        var_dump($title, $chapo, $content, $author, $date);
         $statement = $this->connection->getConnection()->prepare(
             'INSERT INTO articles( title, chapo , content , author, date_creation) VALUES(?, ?, ?, ?, ?)'
         );
@@ -48,29 +47,29 @@ class ArticleModel
      * @param  string $id
      * @return bool
      */
-    public function modifyArticle(string $title, string $chapo, string $content, string $date, string $id): bool
+    public function modifyArticle(string $title, string $chapo, string $content, string $date, string $id_article): bool
     {
         $statement = $this->connection->getConnection()->prepare(
             'UPDATE articles SET title = ?, chapo = ?, content = ?, date_creation = ? WHERE id = ?'
         );
-        $affectedLines = $statement->execute([$title, $chapo, $content, $date, $id]);
+        $affectedLines = $statement->execute([$title, $chapo, $content, $date, $id_article]);
 
         return ($affectedLines > 0);
     }
-    
+
     /**
      * deleteArticle
      *
      * @param  mixed $id
      * @return bool
      */
-    public function deleteArticle(string $id): bool
+    public function deleteArticle(string $id_article): bool
     {
         $statement = $this->connection->getConnection()->prepare(
             'DELETE FROM articles WHERE id = ?'
 
         );
-        $affectedLines = $statement->execute([$id]);
+        $affectedLines = $statement->execute([$id_article]);
 
         return ($affectedLines > 0);
     }
@@ -85,27 +84,31 @@ class ArticleModel
     {
 
         $statement = $this->connection->getConnection()->query(
-            "SELECT * , DATE_FORMAT(date_creation, '%d/%m/%Y %H:%i:%s') AS date_creation
-            FROM articles 
-            JOIN users ON (author = user_id) 
-            ORDER BY id DESC"
+            "SELECT articles.*, 
+            DATE_FORMAT(articles.date_creation, '%d/%m/%Y %H:%i:%s') AS date_creation,
+            users.user_id, users.name, users.firstname, users.email
+            FROM articles
+            LEFT JOIN users 
+            ON articles.author = users.user_id
+            ORDER BY articles.id DESC;"
         );
         $articles = [];
-        $users = [];
         while (($row = $statement->fetch())) {
-            $user = new UserEntity;
-            $user->id = $row['user_id'];
-            $user->name = $row['name'];
-            $user->firstname = $row['firstname'];
-            $user->email = $row['email'];
-
             $article = new ArticleEntity();
             $article->id = $row['id'];
             $article->title = $row['title'];
             $article->chapo = $row['chapo'];
             $article->content = $row['content'];
-            $article->author = $user;
             $article->date = $row['date_creation'];
+
+            if ($row['user_id'] !== null) {
+                $user = new UserEntity;
+                $user->id = $row['user_id'];
+                $user->name = $row['name'];
+                $user->firstname = $row['firstname'];
+                $user->email = $row['email'];
+                $article->author = $user;
+            }
 
             $articles[$article->id] = $article;
         }
@@ -117,36 +120,37 @@ class ArticleModel
      * @param  string $id
      * @return object
      */
-    public function getArticle(string $id): object
+    public function getArticle(string $id_article): object
     {
         $statement = $this->connection->getConnection()->prepare(
             "SELECT * , DATE_FORMAT(date_creation, '%d/%m/%Y %H:%i:%s') AS date_creation
             FROM articles 
-            JOIN users ON (author = user_id)
+            LEFT JOIN users ON (author = user_id)
             WHERE id = ?
             "
 
         );
-        // var_dump($id);
-        $statement->execute([$id]);
+        $statement->execute([$id_article]);
         //Utilisation du fetch pour voir chacune des donné de notre tableau
         $row = $statement->fetch();
         if ($row === false) {
             return null;
         }
-        $user = new UserEntity;
-        $user->id = $row['user_id'];
-        $user->name = $row['name'];
-        $user->firstname = $row['firstname'];
-        $user->email = $row['email'];
-
         $article = new ArticleEntity();
         $article->id = $row['id'];
         $article->title = $row['title'];
         $article->chapo = $row['chapo'];
         $article->content = $row['content'];
-        $article->author = $user;
         $article->date = $row['date_creation'];
+
+        if ($row['user_id'] !== null) {
+            $user = new UserEntity;
+            $user->id = $row['user_id'];
+            $user->name = $row['name'];
+            $user->firstname = $row['firstname'];
+            $user->email = $row['email'];
+            $article->author = $user;
+        }
 
         return $article;
     }

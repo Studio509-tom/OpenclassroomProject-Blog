@@ -7,7 +7,7 @@ use Application\Entities\UserEntity;
 
 class UserModel
 {
-    public DatabaseConnection $connection;    
+    public DatabaseConnection $connection;
     /**
      * __construct
      *
@@ -40,7 +40,7 @@ class UserModel
      * Récupère l'utilisateur en base de donnée
      *
      * @param  string $email
-     * @return obj or null
+     * @return mixed 
      */
     public function getUser($email)
     {
@@ -58,9 +58,89 @@ class UserModel
         $user->name = $row['name'];
         $user->firstname = $row['firstname'];
         $user->email = $row['email'];
+        $user->admin = $row['admin'];
         $user->password = $row['password'];
-
+         
+        
         return $user;
     }
+    /**
+     * getUsers
+     *
+     * @return array
+     */
+    public function getUsers(): array
+    {
+        $statement = $this->connection->getConnection()->query(
+            "SELECT * FROM users"
+        );
+        $users = [];
+        while (($row = $statement->fetch())) {
+            $user = new UserEntity();
+            $user->id = $row['user_id'];
+            $user->name = $row['name'];
+            $user->firstname = $row['firstname'];
+            $user->email = $row['email'];
+            $user->admin = $row['admin'];
+
+            $users[$user->id] = $user;
+        }
+        return $users;
+    }
+
+    /**
+     * modifyRole
+     *
+     * @param  string $email_user
+     * @param  string $new_value_admin
+     * @return bool
+     */
+    public function modifyRole(string $email_user, string $new_value_admin): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            "UPDATE users
+            SET admin = ?
+            WHERE email = ?;"
+        );
+
+        $affectedLines = $statement->execute([$new_value_admin, $email_user]);
+        return ($affectedLines > 0);
+    }
+
+    /**
+     * deleteUser
+     *
+     * @param  string $id_user
+     * @return bool
+     */
+    public function deleteUser(string $id_user): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            "DELETE FROM users
+            WHERE user_id = ?;"
+        );
+
+        $affectedLines = $statement->execute([$id_user]);
+
+        return ($affectedLines > 0);
+    }
     
+    /**
+     * modifyPassword
+     *
+     * @param  string $new_password
+     * @param  string $email_user
+     * @return bool
+     */
+    public function modifyPassword(string $new_password ,string $email_user):bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            "UPDATE users
+            SET password = ?
+            WHERE email = ?;"
+        );
+
+        $affectedLines = $statement->execute([$new_password , $email_user]);
+        return ($affectedLines > 0);
+    }
 }

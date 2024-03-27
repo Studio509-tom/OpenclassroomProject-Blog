@@ -1,0 +1,45 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+	<div class="container container-management mt-5">
+		<div class="row text-center  ">
+			<div class="col-2 nav-management">
+				<a href="index.php?action=management-user">Utilisateurs</a>
+			</div>
+			<div class="col-2 nav-management">
+				<a href="#">Articles</a>
+			</div>
+		</div>
+
+		{% for article in articles %}
+			<div class="row my-2 text-center line-user">
+				<div class="col-3">
+					<p class="inline">{{article.title}}</p>
+				</div>
+				<div class="col-2">
+                {% if article.author != null %}
+					<p class="inline">{{article.author.name}} {{article.author.firstname}}</p>
+                    {% else %}
+					<p class="inline">Utilisateur supprimé</p>
+                        
+                {% endif %}
+                
+				</div>
+                <div class="col-3">
+					<p class="inline">dernière modification :{{article.date}}</p>
+				</div>
+				<div class="col-2">
+                        <a href="index?action=article&id-article={{article.id}}">Voir l'article</a>
+				</div>
+
+
+				<div class="col-2">
+					<form class="form-role" action="index.php?action=delete&id-article={{article.id}}" method="post">
+						<button type="submit" class="col-1 btn btn-primary btn-delete-article">Supprimer l'article</button>
+					</form>
+				</div>
+			</div>
+		{% endfor %}
+
+	</div>
+{% endblock %}

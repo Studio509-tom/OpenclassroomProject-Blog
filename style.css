@@ -28,8 +28,8 @@
 }
 .footer{
     background: rgb(101, 155, 182);
-    position: fixed;
-    bottom: 0;
+    position: relative;
+    top : 30%;
     width: 100%;
     
 }
@@ -59,4 +59,50 @@
 }
 .content-article{
     font-size: 20px;
+}
+.btn-validation{
+    display: flex;
+    
+}
+.btn-valid{
+    width: auto;
+    margin-right: 3em;
+}
+.nav-management{
+    border: solid 1px rgb(184, 184, 184);
+    border-radius: 0 0 10px 10px ;
+}
+.container-management{
+    border: solid 1px rgb(184, 184, 184);
+    
+}
+.management-text-parent
+{
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.management-text{
+    justify-content: center;
+    align-items: center;
+    display: grid;
+}
+.btn-delete-user{
+    width: 70% !important;
+}
+.line-user{
+    border: solid 1px rgb(184, 184, 184);
+    align-items: center;
+}
+.form-role{
+    margin: auto;
+}
+.inline{
+    margin: auto;
+    height: 100%;
+}
+.btn-delete-article{
+    width: 100% !important;
 }

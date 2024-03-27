@@ -7,6 +7,7 @@ class UserEntity {
     public string $name;
     public string $firstname;
     public string $email;
-    public string $password;
+    public $password;
+    public $admin;
     
 }

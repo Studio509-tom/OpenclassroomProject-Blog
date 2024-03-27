@@ -21,7 +21,7 @@
 								</font>
 							</p>
 							<p class="lead mb-0">
-								<a href="index?action=article&id={{article.id}}" class="text-body-emphasis fw-bold">
+								<a href="index?action=article&id-article={{article.id}}" class="text-body-emphasis fw-bold">
 									<font style="vertical-align: inherit;">
 										<font style="vertical-align: inherit;">Continuer la lecture...</font>
 									</font>
@@ -34,59 +34,69 @@
 							</div>
 							<div class="mb-1 text-body-secondary">
 								<font style="vertical-align: inherit;">
-									<font style="vertical-align: inherit;">{{article.author.name}}
-										{{article.author.firstname}}</font>
-								</font>
-							</div>
+									{% if article.author == null %}
+										<font style="vertical-align: inherit;">Anonyme</font>
+									{% else %}
+										<font style="vertical-align: inherit;">{{article.author.name}}
+											{{article.author.firstname}}</font>
+									</font>
+								{% endif %}
+							</font>
+
+
 						</div>
 					</div>
-					<div class="row mb-2">
+				</div>
+				<div class="row mb-2">
 
-					{% else %}
-						<div class="col-md-6">
-							<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-								<div class="col p-4 d-flex flex-column position-static">
-									<h3 class="mb-0">
-										<font style="vertical-align: inherit;">
-											<font style="vertical-align: inherit;">{{article.title}}</font>
-										</font>
-									</h3>
-									<div class="mb-1 text-body-secondary">
-										<font style="vertical-align: inherit;">
-											<font style="vertical-align: inherit;">{{article.date}}</font>
-										</font>
-									</div>
-									<div class="mb-1 text-body-secondary">
-										<font style="vertical-align: inherit;">
+				{% else %}
+					<div class="col-md-6">
+						<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+							<div class="col p-4 d-flex flex-column position-static">
+								<h3 class="mb-0">
+									<font style="vertical-align: inherit;">
+										<font style="vertical-align: inherit;">{{article.title}}</font>
+									</font>
+								</h3>
+								<div class="mb-1 text-body-secondary">
+									<font style="vertical-align: inherit;">
+										<font style="vertical-align: inherit;">{{article.date}}</font>
+									</font>
+								</div>
+								<div class="mb-1 text-body-secondary">
+									<font style="vertical-align: inherit;">
+										{% if article.author == null %}
+											<font style="vertical-align: inherit;">Anonyme</font>
+										{% else %}
 											<font style="vertical-align: inherit;">{{article.author.name}}
 												{{article.author.firstname}}</font>
 										</font>
-									</div>
-									<p class="card-text mb-auto">
-										<font style="vertical-align: inherit;">
-											<font style="vertical-align: inherit;">{{article.chapo}}</font>
-										</font>
-									</p>
-									<a href="index?action=article&id={{article.id}}" class="icon-link gap-1 icon-link-hover stretched-link">
-										<font style="vertical-align: inherit;">
-											<font style="vertical-align: inherit;">
-												continuer la lecture
-											</font>
-										</font>
-										<svg class="bi">
-											<use xlink:href="#chevron-right"></use>
-										</svg>
-									</a>
-								</div>
+									{% endif %}
+								</font>
 							</div>
+							<p class="card-text mb-auto">
+								<font style="vertical-align: inherit;">
+									<font style="vertical-align: inherit;">{{article.chapo}}</font>
+								</font>
+							</p>
+							<a href="index?action=article&id-article={{article.id}}" class="icon-link gap-1 icon-link-hover stretched-link">
+								<font style="vertical-align: inherit;">
+									<font style="vertical-align: inherit;">
+										continuer la lecture
+									</font>
+								</font>
+								<svg class="bi">
+									<use xlink:href="#chevron-right"></use>
+								</svg>
+							</a>
 						</div>
+					</div>
+				</div>
 
 
-					{% endif %}
+			{% endif %}
 
-				{% endfor %}
-			</div>
-
-		</main>
+		{% endfor %}
 	</div>
-{% endblock %}
+
+</main></div>{% endblock %}

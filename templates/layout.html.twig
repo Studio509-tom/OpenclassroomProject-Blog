@@ -23,11 +23,18 @@
 						<li class="nav-item">
 							<a class="nav-link" href="index.php?action=createArticle">Ajouter un Article</a>
 						</li>
-						<p class="name">Bonjour
-							{{user.firstname}}</p>
-						<a href="index.php?action=disconnect">Déconnexion</a>
+						<li class="nav-item">
+							<p class="name">Bonjour
+								{{user.firstname}}
+							</p>
+						</li>
+						<li class="nav-item">
+							<a href="index.php?action=disconnect">Déconnexion</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="index.php?action=profile">Profile</a>
+						</li>
 					{% else %}
-
 						<li class="nav-item">
 							<a class="nav-link" href="index.php?action=login">Connexion</a>
 						</li>
@@ -35,10 +42,14 @@
 							<a class="nav-link" href="index.php?action=register">S'enregistrer</a>
 						</li>
 					{% endif %}
+					{% if user.admin %}
+						<li class="nav-item">
+							<a class="nav-link" href="index.php?action=management">Gestion</a>
+						</li>
+					{% endif %}
 				</ul>
 			</div>
 		</div>
-
 		{% block content %}{% endblock %}
 		<div class="footer">
 			<div class="container">
@@ -80,7 +91,6 @@
 				</div>
 			</div>
 		</div>
-
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	</body>
 </html>

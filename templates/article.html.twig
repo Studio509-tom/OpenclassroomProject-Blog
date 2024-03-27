@@ -15,18 +15,67 @@
 			<div class="col-12">
 				<p class="modify-article">
 					modifié le
-					{{article.date}}</p>
+					{{article.date}}
+					par :
+					{% if article.author == null %}
+						<font style="vertical-align: inherit;">Anonyme</font>
+					{% else %}
+						<font style="vertical-align: inherit;">{{article.author.name}}
+							{{article.author.firstname}}</font>
+					</font>
+				</p>
+			{% endif %}
+		</div>
+		<div class="col-12"></div>
+		{% if (user.id == article.author.id and user.id != null )or user.admin == 1 %}
+			<div class="col-6 text-center">
+				<a href="index.php?action=modifyArticlePage&id-article={{article.id}}">Modifier</a>
 			</div>
+			<div class="col-6 text-center">
+				<a href="index.php?action=delete&id-article={{article.id}}">Supprimer l'article</a>
+			</div>
+		{% endif %}
 
-			{% if user.id == article.author.id %}
-				<div class="col-6 text-center">
-					<a href="index.php?action=modifyArticlePage&id={{article.id}}">Modifier</a>
-				</div>
-				<div class="col-6 text-center">
-					<a href="index.php?action=delete&id={{article.id}}">Supprimer l'article</a>
+			<div class="col-6">
+				<form action="index.php?action=addComment&id-article={{article.id}}" method="post">
+					<div class="form-group">
+						<textarea class="form-control" name="comment" id="comment" rows="3"></textarea>
+						<input class="col-12 mt-3 btn btn-primary" type="submit"/>
+					</div>
+				</form>
+			</div>
+		{% for comment in comments %}
+			{% if comment.validate == true or user.admin %}
+				<div class="col-12">
+					<p class="comment-author">{{comment.user.name}}{{comment.user.firstname}}</p>
+					<div>
+						{% if modifyState != null and modifyState == comment.id  %}
+							<form action="index.php?action=modify-action&comment={{comment.id}}&id-article={{article.id}}" method="post">
+								<textarea class="form-control" name="comment-modify" id="comment-modify" rows="3">{{comment.content_comment}}</textarea>
+								<input class="col-12 mt-3 btn btn-primary" type="submit"/>
+							</form>
+						{% else %}
+							<p class="comment-content">{{comment.content_comment}}</p>
+							{% if user.admin %}
+								<div class="btn-validation">
+									{% if comment.validate == false %}
+										<form action="index.php?action=validate-comment&comment={{comment.id}}&id-article={{article.id}}" method="post">
+											<button class="btn-valid btn btn-primary" type="submit">V</button>
+										</form>
+									{% endif %}
+									<form action="index.php?action=delete-comment&comment={{comment.id}}&id-article={{article.id}}" method="post">
+										<button class="btn-valid btn btn-primary" type="submit">X</button>
+									</form>
+								</div>
+							{% endif %}
+							{% if user.id == comment.user.id %}
+								<a href="index?action=modify-comment&id-article={{article.id}}&comment={{comment.id}}">Modifier</a>
+								<a href="index?action=delete-comment&id-article={{article.id}}&comment={{comment.id}}">Supprimer</a>
+							{% endif %}
+						{% endif %}
+					</div>
 				</div>
 			{% endif %}
-			
-		</div>
+		{% endfor %}
 	</div>
-{% endblock %}
+</div>{% endblock %}
