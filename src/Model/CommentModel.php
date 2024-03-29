@@ -82,7 +82,6 @@ class CommentModel extends ParentController
 
             $comments[$comment->id] = $comment;
         }
-        // var_dump($comments);
         return $comments;
     }
 

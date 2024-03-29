@@ -21,7 +21,6 @@ class CommentController extends ParentController
         if ($session_user !== null) {
             $user = $session_user;
         }
-        // var_dump($user->id);
         if ($user !== null) {
             if (!empty($input["comment"])) {
                 $content = htmlspecialchars($input["comment"]);

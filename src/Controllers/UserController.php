@@ -31,7 +31,7 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-        if ($user == null) {
+        if ($user === null) {
             $twig = $this->twig;
             echo $twig->render("login.html.twig", ['title' => 'Connexion']);
         }else{
@@ -73,7 +73,7 @@ class UserController extends ParentController
                 $userModel = new UserModel();
                 $cheked_email = $userModel->getUser($email);
                 // Si email n'est pas en base de données
-                if ($cheked_email == null) {
+                if ($cheked_email === null) {
                     $userModel->addUser($name, $firstname, $email, $password_hash);
                     $user = $userModel->getUser($email);
                     $user->password = null;
@@ -108,8 +108,7 @@ class UserController extends ParentController
                     $email = $input['input-email'];
                     $user_model = new UserModel();
                     $user = $user_model->getUser($email);
-                    // var_dump($user);
-                    if ($user == null) {
+                    if ($user === null) {
                         echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
                     } else {
                         $checked = password_verify($_POST['inputPassword'], $user->password);
@@ -282,9 +281,8 @@ class UserController extends ParentController
             $connect = true;
         }
 
-        if ($user == null) {
+        if ($user === null) {
             throw new \Exception('Email inconnu');
-            // echo $this->twig->render("change-password-form.html.twig", ["title" => "Mon profile", 'user' => $user, 'connect' => $connect]);
         } else {
             $email = $user->email;
             $user_model = new UserModel();
@@ -341,7 +339,7 @@ class UserController extends ParentController
                 $email_input = $input['input-email'];
                 $user_model = new UserModel();
                 $user = $user_model->getUser($email_input);
-                if ($user == null) {
+                if ($user === null) {
                     echo $this->twig->render("forgot-password.html.twig", ["title" => "Mots de passe oublié", 'connect' => $connect, 'error' => true]);
                 } else {
                     $to = htmlspecialchars($input['input-email']);

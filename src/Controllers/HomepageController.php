@@ -89,7 +89,6 @@ class HomepageController extends ParentController
                 $headers[] = 'From: Blog <' . $user_mail . '>';
                 $headers[] = 'Reply-To: Blog <' . $user_mail . '>';
 
-                // $header = $headers;
                 //ajoute des sauts de ligne entre chaque headers
                 $headers = implode("\r\n", $headers);
                 $subject = "Contact";

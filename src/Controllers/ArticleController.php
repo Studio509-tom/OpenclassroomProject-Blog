@@ -140,7 +140,6 @@ class ArticleController extends ParentController
                 $id_comment = null;
             }
         }
-        // var_dump($comments);
         echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article]);
     }
 
