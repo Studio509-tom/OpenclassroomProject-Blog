@@ -182,7 +182,6 @@ class UserController extends ParentController
             $user = $usersModel->getUser($email_user);
             if ($user->admin !== $role) {
                 $userModel = new UserModel();
-                var_dump($role);
                 $success = $userModel->modifyRole($email_user, $role);
                 if (!$success) {
                     throw new \Exception('Une erreur est surevenu');

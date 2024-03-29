@@ -78,7 +78,6 @@ class HomepageController extends ParentController
 
         if (!$error_email && !$error_name && !$error_firstname && !$error_message) {
             if (!preg_match("/^[a-zA-Z ]*$/", $_POST["input-name"]) || !preg_match("/^[a-zA-Z ]*$/", $_POST["input-firstname"]) || !preg_match("/^[a-z0-9_-]+((\.[a-z0-9_-]+){1,})?@[a-z0-9_-]+((\.[a-z0-9_-]+){1,})?\.[a-z]{2,}$/i", $_POST['inputEmail'])) {
-                var_dump('toto');
                 echo $this->twig->render('homepage.html.twig', ['title' => 'Accueil', 'success' => false, 'connect' => $connect, 'user' => $user]);
             } else {
                 $name = $_POST['input-name'];
