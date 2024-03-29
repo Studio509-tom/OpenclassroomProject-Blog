@@ -123,7 +123,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function articlePage(mixed $session_user, string $id_article, $id_comment) : void 
+    public function articlePage(mixed $session_user, string $id_article,mixed $id_comment) : void 
     {
         $user = null;
         $connect = false;
