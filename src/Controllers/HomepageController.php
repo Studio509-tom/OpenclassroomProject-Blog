@@ -62,8 +62,8 @@ class HomepageController extends ParentController
         $error_name = false;
         $error_firstname = false;
         $error_message = false;
-
-        if (empty($_POST['inputEmail'])) {
+        $input_email = $_POST['inputEmail'];
+        if (empty($input_email)) {
             $error_email = true;
         }
         if (empty($_POST['input-name'])) {
