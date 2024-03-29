@@ -60,8 +60,8 @@ class UserModel
         $user->email = $row['email'];
         $user->admin = $row['admin'];
         $user->password = $row['password'];
-         
-        
+
+
         return $user;
     }
     /**
@@ -124,7 +124,7 @@ class UserModel
 
         return ($affectedLines > 0);
     }
-    
+
     /**
      * modifyPassword
      *
@@ -132,7 +132,7 @@ class UserModel
      * @param  string $email_user
      * @return bool
      */
-    public function modifyPassword(string $new_password ,string $email_user):bool
+    public function modifyPassword(string $new_password, string $email_user): bool
     {
         $statement = $this->connection->getConnection()->prepare(
             "UPDATE users
@@ -140,7 +140,7 @@ class UserModel
             WHERE email = ?;"
         );
 
-        $affectedLines = $statement->execute([$new_password , $email_user]);
+        $affectedLines = $statement->execute([$new_password, $email_user]);
         return ($affectedLines > 0);
     }
 }

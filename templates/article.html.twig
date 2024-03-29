@@ -36,14 +36,14 @@
 			</div>
 		{% endif %}
 
-			<div class="col-6">
-				<form action="index.php?action=addComment&id-article={{article.id}}" method="post">
-					<div class="form-group">
-						<textarea class="form-control" name="comment" id="comment" rows="3"></textarea>
-						<input class="col-12 mt-3 btn btn-primary" type="submit"/>
-					</div>
-				</form>
-			</div>
+		<div class="col-6">
+			<form action="index.php?action=addComment&id-article={{article.id}}" method="post">
+				<div class="form-group">
+					<textarea class="form-control" name="comment" id="comment" rows="3"></textarea>
+					<input class="col-12 mt-3 btn btn-primary" type="submit"/>
+				</div>
+			</form>
+		</div>
 		{% for comment in comments %}
 			{% if comment.validate == true or user.admin %}
 				<div class="col-12">

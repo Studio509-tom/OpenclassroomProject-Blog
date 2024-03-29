@@ -13,7 +13,7 @@ class HomepageController extends ParentController
      * @param mixed $session_user 
      * @return void
      */
-    public function homepage(mixed $session_user) : void
+    public function homepage(mixed $session_user): void
     {
         $user = null;
         $connect = false;

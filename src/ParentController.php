@@ -1,6 +1,7 @@
 <?php
 
 namespace Application;
+
 class ParentController
 {
     public $twig;
@@ -11,5 +12,4 @@ class ParentController
             'cache' => false,
         ]);
     }
-    
 }

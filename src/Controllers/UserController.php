@@ -13,7 +13,7 @@ class UserController extends ParentController
      *
      * @return void
      */
-    public function registerPage() : void
+    public function registerPage(): void
     {
         $twig = $this->twig;
         echo $twig->render("register.html.twig", ['title' => 'Enregistrement']);
@@ -34,8 +34,8 @@ class UserController extends ParentController
         if ($user === null) {
             $twig = $this->twig;
             echo $twig->render("login.html.twig", ['title' => 'Connexion']);
-        }else{
-            throw new \Exception ("Vous êtes déjà connecter.");
+        } else {
+            throw new \Exception("Vous êtes déjà connecter.");
         }
     }
     /**
@@ -44,7 +44,7 @@ class UserController extends ParentController
      *
      * @return void
      */
-    public function register() : void
+    public function register(): void
     {
         $input = $_POST;
         $name = null;
@@ -96,7 +96,7 @@ class UserController extends ParentController
      *
      * @return void
      */
-    public function login() : void
+    public function login(): void
     {
         $input = $_POST;
         $email = null;

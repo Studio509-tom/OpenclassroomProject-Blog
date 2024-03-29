@@ -14,7 +14,7 @@ class ArticleController extends ParentController
      * @param  mixed $session_user
      * @return void
      */
-    public function addArticlePage(mixed $session_user) : void 
+    public function addArticlePage(mixed $session_user): void
     {
         $user = null;
         $connect = false;
@@ -31,7 +31,7 @@ class ArticleController extends ParentController
      * @param mixed $session_user
      * @return void
      */
-    public function articlesPage(mixed $session_user) : void 
+    public function articlesPage(mixed $session_user): void
     {
         $user = null;
         $connect = false;
@@ -51,7 +51,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function modifyArticle(mixed $session_user, string $id_article) : void 
+    public function modifyArticle(mixed $session_user, string $id_article): void
     {
         $input = $_POST;
         $user = null;
@@ -95,7 +95,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function deleteArticle(mixed $session_user, string $id_article) : void 
+    public function deleteArticle(mixed $session_user, string $id_article): void
     {
         $user = null;
         if ($session_user !== null) {
@@ -123,7 +123,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function articlePage(mixed $session_user, string $id_article,mixed $id_comment) : void 
+    public function articlePage(mixed $session_user, string $id_article, mixed $id_comment): void
     {
         $user = null;
         $connect = false;
@@ -152,7 +152,7 @@ class ArticleController extends ParentController
      * @param  string $id
      * @return void
      */
-    public function modifyPage(mixed $session_user, string $id_article) : void 
+    public function modifyPage(mixed $session_user, string $id_article): void
     {
         $user = null;
         $connect = false;

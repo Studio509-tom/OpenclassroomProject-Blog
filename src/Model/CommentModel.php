@@ -180,7 +180,7 @@ class CommentModel extends ParentController
      * @param  string $id_comment
      * @return bool
      */
-    public function valideComment(string $id_comment):bool
+    public function valideComment(string $id_comment): bool
     {
         $statement = $this->connection->getConnection()->prepare(
             "UPDATE comments SET validate = '1' WHERE id_comment = ?;"
