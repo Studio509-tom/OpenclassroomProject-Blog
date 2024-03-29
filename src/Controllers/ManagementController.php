@@ -13,7 +13,7 @@ class ManagementController extends ParentController
      * @param  mixed $session_user
      * @return void
      */
-    public function managementPage($session_user): void
+    public function managementPage(mixed $session_user): void
     {
         $user = null;
         $connect = false;
@@ -21,17 +21,14 @@ class ManagementController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-        if($user !== null) {
+        if ($user !== null) {
             if ($user->admin) {
                 echo $this->twig->render("management.html.twig", ["title" => "Gestion du site", "user" => $user, 'connect' => $connect]);
-            }else{
+            } else {
                 throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
             }
-        }
-        else{
+        } else {
             throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
         }
     }
-    
-    
 }

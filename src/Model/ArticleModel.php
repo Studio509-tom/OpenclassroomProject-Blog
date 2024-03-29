@@ -118,9 +118,9 @@ class ArticleModel
      * getArticle
      *
      * @param  string $id
-     * @return object
+     * @return mixed
      */
-    public function getArticle(string $id_article): object
+    public function getArticle(string $id_article): mixed
     {
         $statement = $this->connection->getConnection()->prepare(
             "SELECT * , DATE_FORMAT(date_creation, '%d/%m/%Y %H:%i:%s') AS date_creation

@@ -6,7 +6,7 @@ use Application\Model\CommentModel;
 use Application\ParentController;
 
 class CommentController extends ParentController
-{    
+{
     /**
      * addComment
      *
@@ -14,7 +14,7 @@ class CommentController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function addComment($session_user, string $id_article):void
+    public function addComment(mixed $session_user, string $id_article): void
     {
         $input = $_POST;
         $user = null;
@@ -22,25 +22,21 @@ class CommentController extends ParentController
             $user = $session_user;
         }
         // var_dump($user->id);
-        if($user !== null){
+        if ($user !== null) {
             if (!empty($input["comment"])) {
-            $content = htmlspecialchars($input["comment"]);
-            $commentModel = new CommentModel();
-            $success = $commentModel->addComment($content, $user->id, $id_article);
-            
-            // var_dump($success);
-            if (!$success) {
-                throw new \Exception('Une erreur est surevenu');
-            } else {
-
-                header('Location: index.php?action=article&id-article=' . $id_article);
+                $content = htmlspecialchars($input["comment"]);
+                $commentModel = new CommentModel();
+                $success = $commentModel->addComment($content, $user->id, $id_article);
+                if (!$success) {
+                    throw new \Exception('Une erreur est surevenu');
+                } else {
+                    header('Location: index.php?action=article&id-article=' . $id_article);
+                }
             }
-        }
-        }else{
+        } else {
             header('Location: index.php?action=article&id-article=' . $id_article);
         }
-        
-    }    
+    }
     /**
      * modifyComment
      *
@@ -49,7 +45,7 @@ class CommentController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function modifyComment($session_user,string $id_comment,string $id_article ):void 
+    public function modifyComment(mixed $session_user, string $id_comment, string $id_article): void
     {
         $success = false;
         $input = $_POST;
@@ -59,7 +55,7 @@ class CommentController extends ParentController
         }
         $commentModel = new CommentModel();
         $comment = $commentModel->getComment($id_comment);
-        if($user->id == $comment->user->id){
+        if ($user->id == $comment->user->id) {
             if (!empty($input["comment-modify"])) {
                 $content = htmlspecialchars($input["comment-modify"]);
                 $commentModel = new CommentModel();
@@ -68,16 +64,14 @@ class CommentController extends ParentController
             if (!$success) {
                 throw new \Exception('Une erreur est surevenu');
             } else {
-    
+
                 header('Location: index.php?action=article&id-article=' . $id_article);
             }
-        }else{
+        } else {
             throw new \Exception("Vous n'êtes pas autorisé à effectuer cette action");
         }
-
-       
     }
-    
+
     /**
      * deleteComment
      *
@@ -86,7 +80,7 @@ class CommentController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function deleteComment($session_user,string $id_comment,string $id_article):void
+    public function deleteComment(mixed $session_user, string $id_comment, string $id_article): void
     {
         $success = false;
         $input = $_POST;
@@ -96,19 +90,19 @@ class CommentController extends ParentController
         }
         $commentModel = new CommentModel();
         $comment = $commentModel->getComment($id_comment);
-        if($user->id == $comment->user->id || $user->admin){
+        if ($user->id == $comment->user->id || $user->admin) {
             $commentModel = new CommentModel();
             $success = $commentModel->deleteComment($id_comment);
-            if(!$success){
+            if (!$success) {
                 throw new \Exception('Une erreur est surevenu');
-            }else{
+            } else {
                 header('Location: index.php?action=article&id-article=' . $id_article);
             }
-        }else{
+        } else {
             throw new \Exception("Vous n'êtes pas autorisé à effectuer cette action");
         }
     }
-    
+
     /**
      * valideComment
      *
@@ -117,30 +111,27 @@ class CommentController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function valideComment(mixed $session_user,string $id_comment,string $id_article):void
+    public function valideComment(mixed $session_user, string $id_comment, string $id_article): void
     {
         $success = false;
         $user = null;
         if ($session_user !== null) {
             $user = $session_user;
         }
-        if($user !== null ){
-            if($user->admin){
+        if ($user !== null) {
+            if ($user->admin) {
                 $commentModel = new CommentModel();
                 $success = $commentModel->valideComment($id_comment);
-                if(!$success){
+                if (!$success) {
                     throw new \Exception('Une erreur est surevenu');
-                }else{
+                } else {
                     header('Location: index.php?action=article&id-article=' . $id_article);
                 }
-            }else{
+            } else {
                 throw new \Exception("Vous n'êtes pas autorisé à effectuer cette action");
             }
-        }else{
+        } else {
             throw new \Exception("Vous n'êtes pas autorisé à effectuer cette action");
         }
     }
-
-
-    
 }

@@ -14,7 +14,7 @@ class ArticleController extends ParentController
      * @param  mixed $session_user
      * @return void
      */
-    public function addArticlePage($session_user)
+    public function addArticlePage(mixed $session_user) : void 
     {
         $user = null;
         $connect = false;
@@ -31,7 +31,7 @@ class ArticleController extends ParentController
      * @param mixed $session_user
      * @return void
      */
-    public function articlesPage($session_user)
+    public function articlesPage(mixed $session_user) : void 
     {
         $user = null;
         $connect = false;
@@ -51,7 +51,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function modifyArticle($session_user, string $id_article)
+    public function modifyArticle(mixed $session_user, string $id_article) : void 
     {
         $input = $_POST;
         $user = null;
@@ -95,7 +95,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function deleteArticle($session_user, string $id_article)
+    public function deleteArticle(mixed $session_user, string $id_article) : void 
     {
         $user = null;
         if ($session_user !== null) {
@@ -103,7 +103,7 @@ class ArticleController extends ParentController
         }
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
-        if ($user->id == $article->author->id ||$user->admin) {
+        if ($user->id == $article->author->id || $user->admin) {
             $article_model = new ArticleModel();
             $success_article = $article_model->deleteArticle($id_article);
             $commentModel = new CommentModel();
@@ -123,7 +123,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function articlePage($session_user, string $id_article, $id_comment)
+    public function articlePage(mixed $session_user, string $id_article, $id_comment) : void 
     {
         $user = null;
         $connect = false;
@@ -153,7 +153,7 @@ class ArticleController extends ParentController
      * @param  string $id
      * @return void
      */
-    public function modifyPage($session_user, string $id_article)
+    public function modifyPage(mixed $session_user, string $id_article) : void 
     {
         $user = null;
         $connect = false;
@@ -173,7 +173,7 @@ class ArticleController extends ParentController
      * @param  mixed $session_user
      * @return void
      */
-    public function addArticle($session_user)
+    public function addArticle(mixed $session_user): void
     {
         $input = $_POST;
         $user = null;
@@ -207,24 +207,29 @@ class ArticleController extends ParentController
         }
     }
 
-    public function managementArticles($session_user){
-        {
+    /**
+     * managementArticles
+     *
+     * @param  mixed $session_user
+     * @return void
+     */
+    public function managementArticles(mixed $session_user): void
+    { {
             $user = null;
             $connect = false;
             if ($session_user !== null) {
                 $user = $session_user;
                 $connect = true;
             }
-            if($user !== null) {
+            if ($user !== null) {
                 if ($user->admin) {
                     $articlesModel = new ArticleModel();
                     $articles = $articlesModel->getArticles();
                     echo $this->twig->render("management-articles.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "articles" => $articles, 'connect' => $connect]);
-                }else{
+                } else {
                     throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
                 }
-            }
-            else{
+            } else {
                 throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
             }
         }

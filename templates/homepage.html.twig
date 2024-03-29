@@ -18,7 +18,7 @@
 				<img src="#">
 			</div>
 			<div class="col-6">
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p class="description-creator">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 			</div>
 		</div>
 
@@ -31,38 +31,80 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-4 text-center">Twitter</div>
-				<div class="col-4 text-center">Linkdin</div>
-				<div class="col-4 text-center">Github</div>
+				<div class="col-4 text-center">
+					<a class="icon-social-main">
+						<i class="i-main fa-brands fa-x-twitter"></i>
+					</a>
+					<p class="mt-4">Twitter</p>
+				</div>
+				<div class="col-4 text-center">
+					<a class="icon-social-main">
+						<i class="i-main fa-brands fa-linkedin-in"></i>
+					</a>
+					<p class="mt-4">Linkdin</p>
+				</div>
+				<div class="col-4 text-center">
+					<a class="icon-social-main">
+						<i class="i-main fa-brands fa-github"></i>
+					</a>
+					<p class="mt-4">Github</p>
+				</div>
+
 			</div>
 		</div>
 	</div>
-	<div class="form-contact">
+	<div>
 		<div class="container ">
 			<div class="row">
 				<div class=" my-5 col-12 text-center">
 					<h2>Me contacter</h2>
 				</div>
-				<form action="contact" methode="post">
+				<form class="form-contact" action="index.php?action=form-contact" method="post">
 					<div class="row">
 						<div class="form-group col-md-6">
 							<label for="input-name">Nom</label>
-							<input type="text" class="form-control" id="input-name" placeholder="Nom">
+							<input type="text" class="form-control" name="input-name" id="input-name" placeholder="Nom">
+							{% if errorName %}
+								<p class="error-form">Le Nom est incorrect</p>
+							{% endif %}
+
+
 						</div>
 						<div class="form-group col-md-6">
 							<label for="input-firstname">Prénom</label>
-							<input type="text" class="form-control" id="input-firstname" placeholder="Prénom">
+							<input type="text" class="form-control" name="input-firstname" id="input-firstname" placeholder="Prénom">
+							{% if errorFirstname %}
+								<p class="error-form">Le Prénom est incorrect</p>
+							{% endif %}
 						</div>
 					</div>
 					<div class="form-group col-md-12">
-						<label for="inputEmail4">Email</label>
-						<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+						<label for="inputEmail">Email</label>
+						<input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Email">
+						{% if errorMail %}
+							<p class="error-form">L'adresse Email est incorrect</p>
+						{% endif %}
 					</div>
 					<div class="form-group col-md-12">
 						<label for="inputMessage">Message</label>
-						<textarea class="form-control" id="inputMessage" placeholder="Expliquez moi votre besoin..."></textarea>
+						<textarea class="form-control" id="inputMessage" name="inputMessage" placeholder="Expliquez moi votre besoin..."></textarea>
+						{% if errorMessage %}
+							<p class="error-form">Veuillez nous expliquez votre besoin</p>
+						{% endif %}
+					</div>
+					{% if error %}
+						<div class="col-md-12">
+							<p class="error-form">Une erreur est survenue veuillez rééssayer ultérieurement.</p>
+						</div>
+
+					{% endif %}
+					<div class="row">
+
+						<button type="submit" class=" col-3 btn btn-primary btn-login">Envoyer</button>
 					</div>
 				</form>
+
+
 			</div>
 		</div>
 	</div>

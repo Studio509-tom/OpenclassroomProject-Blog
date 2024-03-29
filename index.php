@@ -37,7 +37,7 @@ try {
                 (new UserController())->registerPage();
                 break;
             case 'login':
-                (new UserController())->loginPage();
+                (new UserController())->loginPage($session_user);
                 break;
             case 'formLogin':
                 if (!empty($session_user)) {
@@ -170,6 +170,13 @@ try {
             case 'send-password':
                 (new UserController())->sendPassword($session_user);
                 break;
+            case 'form-contact':
+                (new HomepageController())->sendMail($session_user);
+                break;
+            case 'confirm-form':
+                (new HomepageController())->confirmForm($session_user);
+                break;
+
             default:
                 throw new Exception("La page que vous recherchez n'existe pas.");
         }

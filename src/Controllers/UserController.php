@@ -13,20 +13,30 @@ class UserController extends ParentController
      *
      * @return void
      */
-    public function registerPage()
+    public function registerPage() : void
     {
         $twig = $this->twig;
         echo $twig->render("register.html.twig", ['title' => 'Enregistrement']);
     }
     /**
      * Retourne la page de connexion
-     *
+     *@param mixed $session_user
      * @return void
      */
-    public function loginPage()
+    public function loginPage(mixed $session_user): void
     {
-        $twig = $this->twig;
-        echo $twig->render("login.html.twig", ['title' => 'Enregistrement']);
+        $user = null;
+        $connect = false;
+        if ($session_user !== null) {
+            $user = $session_user;
+            $connect = true;
+        }
+        if ($user == null) {
+            $twig = $this->twig;
+            echo $twig->render("login.html.twig", ['title' => 'Connexion']);
+        }else{
+            throw new \Exception ("Vous êtes déjà connecter.");
+        }
     }
     /**
      * Enregistrement de l'utilisateur
@@ -34,7 +44,7 @@ class UserController extends ParentController
      *
      * @return void
      */
-    public function register()
+    public function register() : void
     {
         $input = $_POST;
         $name = null;
@@ -77,9 +87,8 @@ class UserController extends ParentController
                 $twig = $this->twig;
                 echo $twig->render("register.html.twig", ['title' => 'Enregistrement', 'name' => $input["input-name"], 'firstname' => $input["input-firstname"], 'email' => $input["input-email"], 'password' => $input["inputPassword"], 'error' => true]);
             }
-        }else{
+        } else {
             throw new \Exception("Une erreur est survenu veuillez rééssayer ulrérieurement");
-
         }
     }
     /**
@@ -87,7 +96,7 @@ class UserController extends ParentController
      *
      * @return void
      */
-    public function login()
+    public function login() : void
     {
         $input = $_POST;
         $email = null;
@@ -108,7 +117,7 @@ class UserController extends ParentController
                             $user->password = "";
                             $_SESSION['user'] = $user;
                             header('Location: index.php');
-                        }else {
+                        } else {
                             echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
                         }
                     }
@@ -116,7 +125,7 @@ class UserController extends ParentController
             } else {
                 echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
             }
-        }else {
+        } else {
             echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
         }
     }
@@ -126,7 +135,7 @@ class UserController extends ParentController
      * @param  mixed $session_user
      * @return void
      */
-    public function managementUser($session_user): void
+    public function managementUser(mixed $session_user): void
     {
         $user = null;
         $connect = false;
@@ -134,19 +143,17 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-        if($user !== null){
+        if ($user !== null) {
             if ($user->admin) {
                 $usersModel = new UserModel();
                 $users = $usersModel->getUsers();
                 echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect]);
-            }else{
+            } else {
                 throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
             }
-        }
-        else{
+        } else {
             throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
         }
-        
     }
     /**
      * changeRole
@@ -155,7 +162,7 @@ class UserController extends ParentController
      * @param  string $email_user
      * @return void
      */
-    public function changeRole($session_user, string $email_user): void
+    public function changeRole(mixed $session_user, string $email_user): void
     {
         $select = $_POST['select-role'];
         $user_session = null;
@@ -181,7 +188,7 @@ class UserController extends ParentController
                     throw new \Exception('Une erreur est surevenu');
                 }
             }
-          
+
             if ($user_session->email == $email_user) {
                 session_destroy();
                 header('Location: index.php');
@@ -199,7 +206,7 @@ class UserController extends ParentController
      * @param  string $id_user
      * @return void
      */
-    public function deleteUser($session_user, string $id_user): void
+    public function deleteUser(mixed $session_user, string $id_user): void
     {
         $user = null;
         $connect = false;
@@ -236,12 +243,9 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
             echo $this->twig->render("profile.html.twig", ["title" => "Mon profile", 'user' => $user, 'connect' => $connect]);
-        }else {
+        } else {
             throw new \Exception('Vous devez être connecté pour acceder à cette page');
-
         }
-
-        
     }
 
     /**
@@ -258,12 +262,9 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
             echo $this->twig->render("change-password-form.html.twig", ["title" => "Mon profile", 'user' => $user, 'connect' => $connect]);
-
-        }else {
+        } else {
             throw new \Exception('Vous devez être connecté pour acceder à cette page');
-
         }
-
     }
 
     /**
@@ -281,7 +282,7 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-        
+
         if ($user == null) {
             throw new \Exception('Email inconnu');
             // echo $this->twig->render("change-password-form.html.twig", ["title" => "Mon profile", 'user' => $user, 'connect' => $connect]);
@@ -301,14 +302,14 @@ class UserController extends ParentController
                 }
             }
         }
-    }    
+    }
     /**
      * forgotPasswordPage
      *
      * @param  mixed $session_user
      * @return void
      */
-    public function forgotPasswordPage(mixed $session_user):void 
+    public function forgotPasswordPage(mixed $session_user): void
     {
         $user = null;
         $connect = false;
@@ -319,14 +320,14 @@ class UserController extends ParentController
 
 
         echo $this->twig->render("forgot-password.html.twig", ["title" => "Mots de passe oublié", 'user' => $user, 'connect' => $connect]);
-    }    
+    }
     /**
      * sendPassword
      *
      * @param  mixed $session_user
      * @return void
      */
-    public function sendPassword( mixed $session_user):void
+    public function sendPassword(mixed $session_user): void
     {
         $input = $_POST;
         $connect = false;
@@ -355,7 +356,7 @@ class UserController extends ParentController
                         throw new \Exception('Un problème est survenu lors de la modification du mot de passe');
                     } else {
                         $subject = 'Votre mot de passe temporaire';
-                        $message = "Bonjour,\r\nVoici votre mot de passe probatoire : " . $password_temporary ." Nous vous conseillons de le changer immédiatement après votre connexion. http://localhost:8080/Blog/OpenclassroomProject-Blog/index.php?action=login";
+                        $message = "Bonjour,\r\nVoici votre mot de passe probatoire : " . $password_temporary . " Nous vous conseillons de le changer immédiatement après votre connexion. http://localhost:8080/Blog/OpenclassroomProject-Blog/index.php?action=login";
                         $headers = "Content-Type: text/plain; charset=utf-8\r\n";
                         $headers .= "From: tom@studio509.fr\r\n";
                         mail($to, $subject, $message, $headers);
