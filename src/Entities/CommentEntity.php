@@ -9,5 +9,4 @@ class CommentEntity
     public $user;
     public $validate;
     public $article;
-    
 }

@@ -17,19 +17,20 @@
 					<p class="inline">{{article.title}}</p>
 				</div>
 				<div class="col-2">
-                {% if article.author != null %}
-					<p class="inline">{{article.author.name}} {{article.author.firstname}}</p>
-                    {% else %}
-					<p class="inline">Utilisateur supprimé</p>
-                        
-                {% endif %}
-                
+					{% if article.author != null %}
+						<p class="inline">{{article.author.name}}
+							{{article.author.firstname}}</p>
+					{% else %}
+						<p class="inline">Utilisateur supprimé</p>
+
+					{% endif %}
+
 				</div>
-                <div class="col-3">
+				<div class="col-3">
 					<p class="inline">dernière modification :{{article.date}}</p>
 				</div>
 				<div class="col-2">
-                        <a href="index?action=article&id-article={{article.id}}">Voir l'article</a>
+					<a href="index?action=article&id-article={{article.id}}">Voir l'article</a>
 				</div>
 
 
