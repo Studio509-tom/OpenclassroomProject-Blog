@@ -16,7 +16,8 @@ session_start();
 $session_user = null;
 $id_user = null;
 $id_comment = null;
-if (isset($_SESSION['user'])) {
+$test_session = $_SESSION['user'];
+if (isset($test_session)) {
     $session_user = $_SESSION['user'];
 }
 try {
@@ -186,5 +187,5 @@ try {
     }
 } catch (Exception $e) {
     $errorMessage = $e->getMessage();
-    (new HomepageController())->errorPage( $session_user , $errorMessage);
+    (new HomepageController())->errorPage($session_user, $errorMessage);
 }
