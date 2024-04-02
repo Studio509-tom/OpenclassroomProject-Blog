@@ -198,6 +198,30 @@ class UserController extends ParentController
     }
 
     /**
+     * confirmDelete
+     *
+     * @param  mixed $session_user
+     * @param  string $id_user
+     * @return void
+     */
+    public function confirmDelete(mixed $session_user, string $id_user): void
+    {
+        $user = null;
+        $connect = false;
+        if ($session_user !== null) {
+            $user = $session_user;
+            $connect = true;
+        }
+        if ($user !== null) {
+            if ($user->admin) {
+                $usersModel = new UserModel();
+                $users = $usersModel->getUsers();
+                echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect, "confirm" => true, "idUser" => $id_user]);
+            }
+        }
+    }
+
+    /**
      * deleteUser
      *
      * @param  mixed $session_user
@@ -212,19 +236,27 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
         }
+
         if ($user->admin) {
             $usersModel = new UserModel();
-            $success = $usersModel->deleteUser($id_user);
-            if (!$success) {
-                throw new \Exception('Une erreur est surevenu');
+            $number_admin = $usersModel->checkAdmin();
+            if ($number_admin['numbre_admin'] !== "1") {
+                $users_model = new UserModel();
+                $success = $users_model->deleteUser($id_user);
+                if (!$success) {
+                    throw new \Exception('Une erreur est surevenu');
+                }
+                if ($user->id == $id_user) {
+                    header('Location: index.php');
+                    session_destroy();
+                } else {
+                    $this->managementUser($session_user);
+                }
+            } else {
+                $usersModel = new UserModel();
+                $users = $usersModel->getUsers();
+                echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect, 'errorDelete' => true]);
             }
-        }
-        if ($user->id == $id_user) {
-            header('Location: index.php');
-            session_destroy();
-        } else {
-
-            $this->managementUser($session_user);
         }
     }
     /**

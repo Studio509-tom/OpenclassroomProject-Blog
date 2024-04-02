@@ -4,7 +4,7 @@ namespace Application\Controllers;
 
 use Application\Model\CommentModel;
 use Application\ParentController;
-
+use Application\Controllers\c;
 class CommentController extends ParentController
 {
     /**
@@ -26,10 +26,13 @@ class CommentController extends ParentController
                 $content = htmlspecialchars($input["comment"]);
                 $commentModel = new CommentModel();
                 $success = $commentModel->addComment($content, $user->id, $id_article);
+                $message = "Votre commentaire sera visible dès qu'il aura était vérifier";
                 if (!$success) {
                     throw new \Exception('Une erreur est surevenu');
                 } else {
-                    header('Location: index.php?action=article&id-article=' . $id_article);
+                    $articleController = new ArticleController();
+                    $articleController->articlePage($session_user,$id_article,null,$message);
+                    // header('Location: index.php?action=article&id-article=' . $id_article);
                 }
             }
         } else {

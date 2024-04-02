@@ -16,8 +16,7 @@ session_start();
 $session_user = null;
 $id_user = null;
 $id_comment = null;
-$test_session = $_SESSION['user'];
-if (isset($test_session)) {
+if (isset($_SESSION['user'])) {
     $session_user = $_SESSION['user'];
 }
 try {
@@ -59,7 +58,7 @@ try {
             case 'article':
                 if (isset($_GET['id-article']) && $_GET['id-article'] > 0) {
                     $id_article = $_GET['id-article'];
-                    (new ArticleController())->articlePage($session_user, $id_article, $id_comment);
+                    (new ArticleController())->articlePage($session_user, $id_article, $id_comment, "");
                 }
                 break;
             case 'modifyArticlePage':
@@ -92,7 +91,7 @@ try {
                     $id_article = $_GET['id-article'];
                     if (isset($_GET['comment']) && $_GET['comment'] > 0) {
                         $id_comment = $_GET['comment'];
-                        (new ArticleController())->articlePage($session_user, $id_article, $id_comment);
+                        (new ArticleController())->articlePage($session_user, $id_article, $id_comment, "");
                     }
                 }
                 break;
@@ -177,7 +176,12 @@ try {
             case 'confirm-form':
                 (new HomepageController())->confirmForm($session_user);
                 break;
-
+            case 'confirm-delete':
+                if (isset($_GET['id_user']) && $_GET['id_user'] > 0) {
+                    $id_user = $_GET['id_user'];
+                    (new UserController())->confirmDelete($session_user , $id_user);
+                }
+                break;
             default:
                 throw new Exception("La page que vous recherchez n'existe pas.");
         }

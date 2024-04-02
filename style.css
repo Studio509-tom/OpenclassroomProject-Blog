@@ -176,7 +176,7 @@ main{
     align-items: center;
 }
 .form-role{
-    margin: auto;
+    margin: auto !important;
 }
 .inline{
     margin: auto;
@@ -206,4 +206,7 @@ main{
 }
 .form-register{
     margin: auto;
+}
+.error-delete{
+    text-align: center;
 }

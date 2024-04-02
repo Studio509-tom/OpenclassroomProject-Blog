@@ -143,4 +143,21 @@ class UserModel
         $affectedLines = $statement->execute([$new_password, $email_user]);
         return ($affectedLines > 0);
     }
+    
+    /**
+     * checkAdmin
+     *
+     * @return mixed
+     */
+    public function checkAdmin(): mixed
+    {
+        $statement = $this->connection->getConnection()->query(
+            "SELECT COUNT(*) AS numbre_admin
+            FROM users
+            WHERE admin = 1;"
+        );
+        return $statement->fetch();
+
+
+    }
 }

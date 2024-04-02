@@ -123,7 +123,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function articlePage(mixed $session_user, string $id_article, mixed $id_comment): void
+    public function articlePage(mixed $session_user, string $id_article, mixed $id_comment,string $message): void
     {
         $user = null;
         $connect = false;
@@ -140,7 +140,7 @@ class ArticleController extends ParentController
                 $id_comment = null;
             }
         }
-        echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article]);
+        echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article , 'message' => $message]);
     }
 
 

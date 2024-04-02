@@ -1,6 +1,11 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
+	{% if errorDelete %}
+		<p class="error-form error-delete">Il ne peut pas ne plus y avoir d'administrateur !</p>
+
+	{% endif %}
+
 	<div class="container container-management my-5">
 		<div class="row text-center  ">
 			<div class="col-2 nav-management">
@@ -42,9 +47,30 @@
 
 
 				<div class="col-3 form-role">
-					<form class="form-role" action="index.php?action=delete-user&id_user={{user.id}}" method="post">
-						<button type="submit" class="col-1 btn btn-primary btn-delete-user">Supprimer l'utilisateur</button>
-					</form>
+					{% if confirm and idUser == user.id %}
+						<form class="form-role" action="index.php?action=delete-user&id_user={{user.id}}" method="post">
+							<div>
+								<p>êtes vous sûr ?</p>
+								<div class="row">
+									<div class="col-6">
+										<button type="submit" class="col-1 btn btn-primary btn-delete-user">Oui</button>
+									</div>
+									<div class="col-6">
+
+										<a href="index.php?action=management-user" class="col-1 btn btn-primary btn-delete-user">Non</a>
+									</div>
+								</div>
+							</div>
+						</form>
+
+					{% else %}
+						<form class="form-role" action="index.php?action=confirm-delete&id_user={{user.id}}" method="post">
+
+							<button type="submit" class="col-1 btn btn-primary btn-delete-user">Supprimer l'utilisateur</button>
+						</form>
+
+					{% endif %}
+
 				</div>
 			</div>
 		{% endfor %}
