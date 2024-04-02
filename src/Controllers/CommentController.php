@@ -32,7 +32,6 @@ class CommentController extends ParentController
                 } else {
                     $articleController = new ArticleController();
                     $articleController->articlePage($session_user,$id_article,null,$message);
-                    // header('Location: index.php?action=article&id-article=' . $id_article);
                 }
             }
         } else {
