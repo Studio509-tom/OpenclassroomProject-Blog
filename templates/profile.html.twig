@@ -1,19 +1,23 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-	<div class="container">
+	<div class="container container-confirm-form">
 		<div class="row">
-			<div class="parent-profil text-center">
+			<div class="parent-profil ">
 				<div class="col-12 mt-3">
 					<h1>Mon compte :</h1>
 				</div>
 				<div class="col-12 mt-3">
-					Nom :
-					{{user.name}}
-					Prénom :
-					{{user.firstname}}</div>
-				<div class="col-12 mt-3">Email :{{user.email}}</div>
+					<p>Nom :
+						{{user.name}}</p>
+				</div>
+
 				<div class="col-12 mt-3">
+					<p>Prénom :
+						{{user.firstname}}</p>
+				</div>
+				<div class="col-12 mt-3">Email :{{user.email}}</div>
+				<div class="col-12 mt-3 modify-password">
 					<a href="index.php?action=change-password-form">Changer mon mot de passe.</a>
 				</div>
 			</div>

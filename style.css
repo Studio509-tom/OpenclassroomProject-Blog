@@ -1,3 +1,9 @@
+.raleway-body {
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+  }
 main{
     min-height: 80vh;
 }
@@ -209,4 +215,13 @@ main{
 }
 .error-delete{
     text-align: center;
+}
+.modify-password{
+    text-align: center;
+}
+
+.parent-profil{
+    border: solid 2px rgb(101, 155, 182);
+    border-radius: 15px;
+    padding: 50px !important; 
 }
