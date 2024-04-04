@@ -1,0 +1,34 @@
+# Blog : Le developper qui vous correspond
+
+Fonctionnalités Principales :
+Exploration de Contenu : Parcourez une variété d'articles intéressants sur divers sujets, allant de la technologie à la culture, en passant par le lifestyle et bien plus encore.
+Partage de Contenu : Partagez vos propres expériences, opinions et connaissances en publiant des articles sur le blog, et interagissez avec d'autres utilisateurs en commentant leurs publications.
+Système de Connexion Sécurisé : Créez un compte personnel sécurisé pour accéder à des fonctionnalités avancées telles que la gestion de votre profil.
+Formulaire de Contact : Utilisez notre formulaire de contact intuitif pour nous envoyer vos questions, suggestions ou demandes de collaboration. 
+Interface Conviviale : Profitez d'une interface utilisateur conviviale et intuitive, conçue pour offrir une expérience de navigation fluide et agréable sur tous les appareils, que ce soit sur ordinateur, tablette ou smartphone.
+
+## Installation
+
+Pour installer le projet, exécutez la commande suivante : gh repo clone Studio509-tom/OpenclassroomProject-Blog
+
+## Configuration
+
+Avant de commencer, assurez-vous de configurer les variables d'environnement suivantes :
+
+- $this->database = new \PDO('mysql:host=localhost;dbname=<Nom de votre base de donnée >;charset=utf8', '<utilisateur>', '<mots de passe>');
+
+Dans Blog>OpenclassroomProject-Blog>src>Lib>DatabaseConnection.php ligne:15
+
+### Exemples
+
+Voici quelques exemples d'utilisation :
+
+- Exemple 1 : Enregistrement d'un nouvelle utilisateur.
+- Exemple 2 : Création d'un article.
+- Exemple 3 : Création d'un commentaire.
+
+## Astuces et Remarques
+
+- Assurez-vous d'avoir la version 1.0 de twig d'installer 
+- Assurez-vous d'avoir composer d'installer.
+- Assurez-vous d'avoir un gestionnaire de mail d'installer si vous utiliser se projet en local (sendmail est conseiller).
