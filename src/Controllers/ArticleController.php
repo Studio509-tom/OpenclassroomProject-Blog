@@ -61,32 +61,32 @@ class ArticleController extends ParentController
             $user = $session_user;
             $connect = true;
         }
+        $articleModel = new ArticleModel();
+        $article = $articleModel->getArticle($id_article);
         if ($connect && ($input !== null)) {
             if (!empty($input["input-title"]) && !empty($input["input-chapo"])  && !empty($input["input-content"])) {
-                if ((!preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-title"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-chapo"]))) {
-                    echo $this->twig->render("modification-article.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
-                } else {
+                if ($user->id == $article->author->id || $user->isAdmin()) {
+                    $title = htmlspecialchars($input["input-title"]);
+                    $chapo = htmlspecialchars($input["input-chapo"]);
+                    $content = htmlspecialchars($input["input-content"]);
+                    $author = $input["select-author"];
+                    $date_time_zone = new \DateTimeZone('Europe/Paris');
+                    $date = new \DateTime('now', $date_time_zone);
                     $articleModel = new ArticleModel();
-                    $article = $articleModel->getArticle($id_article);
-                    $userModel = new UserModel();
-                    if ($user->id == $article->author->id || $user->isAdmin()) {
-                        $title = $input["input-title"];
-                        $chapo = $input["input-chapo"];
-                        $content = htmlspecialchars($input["input-content"]);
-                        $author = $input["select-author"];
-                        $date_time_zone = new \DateTimeZone('Europe/Paris');
-                        $date = new \DateTime('now', $date_time_zone);
-                        $articleModel = new ArticleModel();
-                        $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $author, $id_article);
-                        if (!$success) {
-                            throw new \Exception('Une erreur est surevenu');
-                        } else {
-                            header('Location: index.php?action=article&id-article=' . $id_article);
-                        }
+                    $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $author, $id_article);
+                    if (!$success) {
+                        throw new \Exception('Une erreur est surevenu');
+                    } else {
+                        header('Location: index.php?action=article&id-article=' . $id_article);
                     }
                 }
             } else {
-                echo $this->twig->render("modification-article.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
+                $userModel = new UserModel();
+                $users = $userModel->getUsers();
+                $article->title = htmlspecialchars_decode($article->title);
+                $article->chapo = htmlspecialchars_decode($article->chapo);
+                $article->content = htmlspecialchars_decode($article->content);
+                echo $this->twig->render("modification-article.html.twig", ['title' => "Article", 'user' => $user, "users" => $users, 'connect' => $connect, "article" => $article, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
             }
         }
     }
@@ -145,7 +145,7 @@ class ArticleController extends ParentController
                 $id_comment = null;
             }
         }
-        
+
         echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article, 'message' => $message]);
     }
 

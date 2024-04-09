@@ -17,7 +17,7 @@
 					modifié le
 					{{article.date}}
 					par :
-					{% if article.author == null %}
+					{% if article.hasAuthor() %}
 						<font style="vertical-align: inherit;">Anonyme</font>
 					{% else %}
 						<font style="vertical-align: inherit;">{{article.author.name}}
@@ -59,7 +59,7 @@
 							</form>
 						{% else %}
 							<p class="comment-content">{{comment.content_comment}}</p>
-							{% if user.role  == "admin" %}
+							{% if user.isAdmin() %}
 								<div class="btn-validation">
 									{% if not comment.isValidate() %}
 										<form action="index.php?action=validate-comment&comment={{comment.id}}&id-article={{article.id}}" method="post">
