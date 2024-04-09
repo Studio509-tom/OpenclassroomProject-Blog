@@ -3,6 +3,7 @@
 namespace Application\Controllers;
 
 use Application\Model\CommentModel;
+use Application\Model\UserModel;
 use Application\ParentController;
 use Application\Controllers\c;
 class CommentController extends ParentController
@@ -91,7 +92,8 @@ class CommentController extends ParentController
         }
         $commentModel = new CommentModel();
         $comment = $commentModel->getComment($id_comment);
-        if ($user->id == $comment->user->id || $user->admin) {
+        $userModel = new UserModel();
+        if ($user->id == $comment->user->id || $userModel->isAdmin($user->id)) {
             $commentModel = new CommentModel();
             $success = $commentModel->deleteComment($id_comment);
             if (!$success) {
@@ -120,7 +122,8 @@ class CommentController extends ParentController
             $user = $session_user;
         }
         if ($user !== null) {
-            if ($user->admin) {
+            $userModel = new UserModel();
+            if ($userModel->isAdmin($user->id)) {
                 $commentModel = new CommentModel();
                 $success = $commentModel->valideComment($id_comment);
                 if (!$success) {

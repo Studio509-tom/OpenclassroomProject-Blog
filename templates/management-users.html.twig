@@ -28,13 +28,13 @@
 				<div class="col-3 form-role">
 					<form class="inline" action="index.php?action=change-role&email_user={{user.email}}" method="post">
 
-						{% if user.admin == 1 %}
+						{% if user.role == "admin" %}
 							<select name="select-role">
 								<option value="admin">Admin</option>
 								<option value="user">Utilisateur</option>
 							</select>
 							<button type="submit" class=" btn btn-primary">V</button>
-						{% elseif user.admin == 0 %}
+						{% elseif user.role == "user" %}
 							<select name="select-role">
 								<option value="user">Utilisateur</option>
 								<option value="admin">Admin</option>

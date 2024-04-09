@@ -58,7 +58,7 @@ class UserModel
         $user->name = $row['name'];
         $user->firstname = $row['firstname'];
         $user->email = $row['email'];
-        $user->admin = $row['admin'];
+        $user->role = $row['role'];
         $user->password = $row['password'];
 
 
@@ -72,7 +72,7 @@ class UserModel
     public function getUsers(): array
     {
         $statement = $this->connection->getConnection()->query(
-            "SELECT * FROM users"
+            "SELECT * FROM users ORDER BY firstname, name"
         );
         $users = [];
         while (($row = $statement->fetch())) {
@@ -81,7 +81,7 @@ class UserModel
             $user->name = $row['name'];
             $user->firstname = $row['firstname'];
             $user->email = $row['email'];
-            $user->admin = $row['admin'];
+            $user->role = $row['role'];
 
             $users[$user->id] = $user;
         }
@@ -99,7 +99,7 @@ class UserModel
     {
         $statement = $this->connection->getConnection()->prepare(
             "UPDATE users
-            SET admin = ?
+            SET role = ?
             WHERE email = ?;"
         );
 
@@ -143,7 +143,7 @@ class UserModel
         $affectedLines = $statement->execute([$new_password, $email_user]);
         return ($affectedLines > 0);
     }
-    
+
     /**
      * checkAdmin
      *
@@ -154,10 +154,21 @@ class UserModel
         $statement = $this->connection->getConnection()->query(
             "SELECT COUNT(*) AS numbre_admin
             FROM users
-            WHERE admin = 1;"
+            WHERE role = 'admin';"
         );
         return $statement->fetch();
+    }
 
+    public function isAdmin(string $id_user)
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            "SELECT * FROM users
+            WHERE user_id = ?
+            AND role = 'admin';"
+        );
+        $affectedLines = $statement->execute([$id_user]);
+        var_dump($affectedLines);
 
+        return $affectedLines;
     }
 }

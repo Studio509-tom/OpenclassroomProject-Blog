@@ -3,8 +3,13 @@
 {% block content %}
 	<div class="form-article">
 		<div class="container ">
+			<div class="row">
+				<div class=" my-5 col-12 text-center">
+					<h1>Ajout d'article</h1>
+				</div>
+			</div>
 			<form action="index.php?action=addArticle" method="post">
-				<div class="row">
+				<div class="row mt-5">
 					<div class="form-group col-md-12">
 						<label for="input-title">Titre</label>
 						<input type="text" class="form-control input-title" name="input-title" id="input-title" placeholder="Titre" value="{{titleArticle}}">
@@ -26,6 +31,20 @@
 							<p class="error-form">Veuillez saisir le contenu de votre article</p>
 						{% endif %}
 					</div>
+
+					{% if user.role == "admin" %}
+						<div class="form-group col-md-12">
+							<label for="select-author">Autheur</label>
+							<select type="select" class="form-select " name="select-author" required>
+								<option value="" hidden>Sélectionner l'auteur</option>
+								{% for author in users %}
+									<option value="{{author.id}}" {% if article.author.id == author.id %} selected {% endif %}>{{author.name}}
+										{{author.firstname}}</option>
+								{% endfor %}
+							</select>
+						</div>
+
+					{% endif %}
 				</div>
 				<div class="row text-center">
 					<button type="submit" class="col-1 btn btn-primary btn-login">Envoyer</button>

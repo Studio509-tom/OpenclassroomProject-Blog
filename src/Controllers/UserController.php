@@ -143,7 +143,8 @@ class UserController extends ParentController
             $connect = true;
         }
         if ($user !== null) {
-            if ($user->admin) {
+            $userModel = new UserModel();
+            if ($userModel->isAdmin($user->id)) {
                 $usersModel = new UserModel();
                 $users = $usersModel->getUsers();
                 echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect]);
@@ -168,18 +169,19 @@ class UserController extends ParentController
         $connect = false;
         $role = null;
         if ($select == "admin") {
-            $role = '1';
+            $role = 'admin';
         } else {
-            $role = '0';
+            $role = 'user';
         }
         if ($session_user !== null) {
             $user_session = $session_user;
             $connect = true;
         }
-        if ($user_session->admin) {
-            $usersModel = new UserModel();
-            $user = $usersModel->getUser($email_user);
-            if ($user->admin !== $role) {
+        $userModel = new UserModel();
+        if ($userModel->isAdmin($user_session->id)) {
+            $userModel = new UserModel();
+            $user = $userModel->getUser($email_user);
+            if ($userModel->isAdmin($user->id) !== $role) {
                 $userModel = new UserModel();
                 $success = $userModel->modifyRole($email_user, $role);
                 if (!$success) {
@@ -213,7 +215,8 @@ class UserController extends ParentController
             $connect = true;
         }
         if ($user !== null) {
-            if ($user->admin) {
+            $userModel = new UserModel();
+            if ($userModel->isAdmin($user->id)) {
                 $usersModel = new UserModel();
                 $users = $usersModel->getUsers();
                 echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect, "confirm" => true, "idUser" => $id_user]);
@@ -236,8 +239,8 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-
-        if ($user->admin) {
+        $userModel = new UserModel();
+        if ($userModel->isAdmin($user->id)) {
             $usersModel = new UserModel();
             $number_admin = $usersModel->checkAdmin();
             if ($number_admin['numbre_admin'] !== "1") {

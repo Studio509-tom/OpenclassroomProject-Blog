@@ -2,6 +2,7 @@
 
 namespace Application\Controllers;
 
+use Application\Model\UserModel;
 use Application\ParentController;
 use Application\Model\ArticleModel;
 use Application\Model\CommentModel;
@@ -62,19 +63,21 @@ class ArticleController extends ParentController
         }
         if ($connect && ($input !== null)) {
             if (!empty($input["input-title"]) && !empty($input["input-chapo"])  && !empty($input["input-content"])) {
-                if ((!preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-title"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-chapo"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-content"]))) {
-                    echo $this->twig->render("modify-article.html.twig", ['title' => "Article", "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
+                if ((!preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-title"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-chapo"]))) {
+                    echo $this->twig->render("modification-article.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
                 } else {
                     $articleModel = new ArticleModel();
                     $article = $articleModel->getArticle($id_article);
-                    if ($user->id == $article->author->id) {
+                    $userModel = new UserModel();
+                    if ($user->id == $article->author->id || $userModel->isAdmin($user->id)) {
                         $title = $input["input-title"];
                         $chapo = $input["input-chapo"];
-                        $content = $input["input-content"];
+                        $content = htmlspecialchars($input["input-content"]);
+                        $author = $input["select-author"];
                         $date_time_zone = new \DateTimeZone('Europe/Paris');
                         $date = new \DateTime('now', $date_time_zone);
                         $articleModel = new ArticleModel();
-                        $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $id_article);
+                        $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $author, $id_article);
                         if (!$success) {
                             throw new \Exception('Une erreur est surevenu');
                         } else {
@@ -83,7 +86,7 @@ class ArticleController extends ParentController
                     }
                 }
             } else {
-                echo $this->twig->render("modify-article.html.twig", ['title' => "Article", "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
+                echo $this->twig->render("modification-article.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
             }
         }
     }
@@ -103,7 +106,8 @@ class ArticleController extends ParentController
         }
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
-        if ($user->id == $article->author->id || $user->admin) {
+        $userModel = new UserModel();
+        if ($user->id == $article->author->id || $userModel->isAdmin($user->id)) {
             $article_model = new ArticleModel();
             $success_article = $article_model->deleteArticle($id_article);
             $commentModel = new CommentModel();
@@ -123,7 +127,7 @@ class ArticleController extends ParentController
      * @param  string $id_article
      * @return void
      */
-    public function articlePage(mixed $session_user, string $id_article, mixed $id_comment,string $message): void
+    public function articlePage(mixed $session_user, string $id_article, mixed $id_comment, string $message): void
     {
         $user = null;
         $connect = false;
@@ -133,6 +137,7 @@ class ArticleController extends ParentController
         }
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
+        $article->content = html_entity_decode($article->content);
         $commentModel = new CommentModel();
         $comments = $commentModel->getComments($id_article);
         if ($id_comment !== null) {
@@ -140,7 +145,8 @@ class ArticleController extends ParentController
                 $id_comment = null;
             }
         }
-        echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article , 'message' => $message]);
+        
+        echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article, 'message' => $message]);
     }
 
 
@@ -162,7 +168,11 @@ class ArticleController extends ParentController
         }
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
-        echo $this->twig->render("modification-article.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect, 'article' => $article]);
+        $article->content = html_entity_decode($article->content);
+        $userModel = new UserModel();
+        $users = $userModel->getUsers();
+
+        echo $this->twig->render("modification-article.html.twig", ['title' => "Article", 'users' => $users, 'user' => $user, 'connect' => $connect, 'article' => $article]);
     }
 
 
@@ -183,12 +193,12 @@ class ArticleController extends ParentController
         }
         if ($connect && ($input !== null)) {
             if (!empty($input["input-title"]) && !empty($input["input-chapo"])  && !empty($input["input-content"])) {
-                if ((!preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-title"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-chapo"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-content"]))) {
-                    echo $this->twig->render("create-article.html.twig", ['title' => "Article", "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
+                if ((!preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-title"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-chapo"]))) {
+                    echo $this->twig->render("create-article.html.twig", ['title' => "Article",  'connect' => $connect, "user" => $user, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
                 } else {
                     $title = $input["input-title"];
                     $chapo = $input["input-chapo"];
-                    $content = $input["input-content"];
+                    $content = htmlspecialchars($input["input-content"]);
                     $author = $user->id;
                     $date_time_zone = new \DateTimeZone('Europe/Paris');
                     $date = new \DateTime('now', $date_time_zone);
@@ -201,8 +211,10 @@ class ArticleController extends ParentController
                     }
                 }
             } else {
-                echo $this->twig->render("create-article.html.twig", ['title' => "Article", "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
+                echo $this->twig->render("create-article.html.twig", ['title' => "Article",  'connect' => $connect, "user" => $user, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
             }
+        } else {
+            echo $this->twig->render("create-article.html.twig", ['title' => "Article",  'connect' => $connect, "user" => $user, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
         }
     }
 
@@ -221,7 +233,8 @@ class ArticleController extends ParentController
                 $connect = true;
             }
             if ($user !== null) {
-                if ($user->admin) {
+                $userModel = new UserModel();
+                if ($userModel->isAdmin($user->id)) {
                     $articlesModel = new ArticleModel();
                     $articles = $articlesModel->getArticles();
                     echo $this->twig->render("management-articles.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "articles" => $articles, 'connect' => $connect]);

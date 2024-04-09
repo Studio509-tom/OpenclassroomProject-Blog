@@ -47,12 +47,12 @@ class ArticleModel
      * @param  string $id
      * @return bool
      */
-    public function modifyArticle(string $title, string $chapo, string $content, string $date, string $id_article): bool
+    public function modifyArticle(string $title, string $chapo, string $content, string $date,string $author ,string $id_article): bool
     {
         $statement = $this->connection->getConnection()->prepare(
-            'UPDATE articles SET title = ?, chapo = ?, content = ?, date_creation = ? WHERE id = ?'
+            'UPDATE articles SET title = ?, chapo = ?, content = ?,author = ?, date_creation = ? WHERE id = ?'
         );
-        $affectedLines = $statement->execute([$title, $chapo, $content, $date, $id_article]);
+        $affectedLines = $statement->execute([$title, $chapo, $content,$author, $date , $id_article]);
 
         return ($affectedLines > 0);
     }

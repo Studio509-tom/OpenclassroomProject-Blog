@@ -21,8 +21,9 @@ class ManagementController extends ParentController
             $user = $session_user;
             $connect = true;
         }
+        $userModel = new UserModel();
         if ($user !== null) {
-            if ($user->admin) {
+            if ($userModel->isAdmin($user->id)) {
                 echo $this->twig->render("management.html.twig", ["title" => "Gestion du site", "user" => $user, 'connect' => $connect]);
             } else {
                 throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");

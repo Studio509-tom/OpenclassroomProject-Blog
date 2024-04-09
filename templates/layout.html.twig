@@ -40,7 +40,7 @@
 				<ul class="nav">
 
 
-					{% if user.admin %}
+					{% if user.role == "admin" %}
 						<li class="nav-item">
 							<a class="nav-link" href="index.php?action=management">Gestion</a>
 						</li>

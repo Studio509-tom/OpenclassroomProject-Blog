@@ -29,6 +29,19 @@
 							<p class="error-form">Veuillez saisir le contenu de votre article</p>
 						{% endif %}
 					</div>
+					{% if user.role == "admin" %}
+						<div class="form-group col-md-12">
+							<label for="select-author">Autheur</label>
+							<select type="select" class="form-select " name="select-author" required>
+								<option value="" hidden>Sélectionner l'auteur</option>
+								{% for author in users %}
+									<option value="{{author.id}}" {% if article.author.id == author.id %} selected {% endif %}>{{author.name}}
+										{{author.firstname}}</option>
+								{% endfor %}
+							</select>
+						</div>
+
+					{% endif %}
 				</div>
 				<div class="row text-center">
 					<button type="submit" class="col-1 btn btn-primary btn-login">Envoyer</button>

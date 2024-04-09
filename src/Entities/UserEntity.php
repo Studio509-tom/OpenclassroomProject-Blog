@@ -10,5 +10,5 @@ class UserEntity
     public string $firstname;
     public string $email;
     public $password;
-    public $admin;
+    public $role;
 }

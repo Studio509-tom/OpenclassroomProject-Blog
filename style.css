@@ -225,3 +225,10 @@ main{
     border-radius: 15px;
     padding: 50px !important; 
 }
+.file-presentation{
+    width: inherit;
+}
+.picture-block{
+    margin: auto !important;
+    text-align: center;
+}
