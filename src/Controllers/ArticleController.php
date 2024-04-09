@@ -69,7 +69,7 @@ class ArticleController extends ParentController
                     $articleModel = new ArticleModel();
                     $article = $articleModel->getArticle($id_article);
                     $userModel = new UserModel();
-                    if ($user->id == $article->author->id || $userModel->isAdmin($user->id)) {
+                    if ($user->id == $article->author->id || $user->isAdmin()) {
                         $title = $input["input-title"];
                         $chapo = $input["input-chapo"];
                         $content = htmlspecialchars($input["input-content"]);
@@ -107,7 +107,7 @@ class ArticleController extends ParentController
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         $userModel = new UserModel();
-        if ($user->id == $article->author->id || $userModel->isAdmin($user->id)) {
+        if ($user->id == $article->author->id || $user->isAdmin()) {
             $article_model = new ArticleModel();
             $success_article = $article_model->deleteArticle($id_article);
             $commentModel = new CommentModel();
@@ -234,7 +234,7 @@ class ArticleController extends ParentController
             }
             if ($user !== null) {
                 $userModel = new UserModel();
-                if ($userModel->isAdmin($user->id)) {
+                if ($user->isAdmin()) {
                     $articlesModel = new ArticleModel();
                     $articles = $articlesModel->getArticles();
                     echo $this->twig->render("management-articles.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "articles" => $articles, 'connect' => $connect]);

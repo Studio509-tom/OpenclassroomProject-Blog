@@ -144,7 +144,7 @@ class UserController extends ParentController
         }
         if ($user !== null) {
             $userModel = new UserModel();
-            if ($userModel->isAdmin($user->id)) {
+            if ($user->isAdmin()) {
                 $usersModel = new UserModel();
                 $users = $usersModel->getUsers();
                 echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect]);
@@ -178,10 +178,10 @@ class UserController extends ParentController
             $connect = true;
         }
         $userModel = new UserModel();
-        if ($userModel->isAdmin($user_session->id)) {
+        if ($user_session->isAdmin()) {
             $userModel = new UserModel();
             $user = $userModel->getUser($email_user);
-            if ($userModel->isAdmin($user->id) !== $role) {
+            if ($user->isAdmin() !== $role) {
                 $userModel = new UserModel();
                 $success = $userModel->modifyRole($email_user, $role);
                 if (!$success) {
@@ -215,8 +215,7 @@ class UserController extends ParentController
             $connect = true;
         }
         if ($user !== null) {
-            $userModel = new UserModel();
-            if ($userModel->isAdmin($user->id)) {
+            if ($user->isAdmin()) {
                 $usersModel = new UserModel();
                 $users = $usersModel->getUsers();
                 echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect, "confirm" => true, "idUser" => $id_user]);
@@ -239,8 +238,7 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-        $userModel = new UserModel();
-        if ($userModel->isAdmin($user->id)) {
+        if ($user->isAdmin()) {
             $usersModel = new UserModel();
             $number_admin = $usersModel->checkAdmin();
             if ($number_admin['numbre_admin'] !== "1") {

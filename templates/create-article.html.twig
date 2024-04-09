@@ -32,7 +32,7 @@
 						{% endif %}
 					</div>
 
-					{% if user.role == "admin" %}
+					{% if user.isAdmin() %}
 						<div class="form-group col-md-12">
 							<label for="select-author">Autheur</label>
 							<select type="select" class="form-select " name="select-author" required>

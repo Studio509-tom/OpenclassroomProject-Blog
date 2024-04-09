@@ -11,4 +11,18 @@ class UserEntity
     public string $email;
     public $password;
     public $role;
+
+    /**
+     * isAdmin
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        if ($this->role == "admin") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

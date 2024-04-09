@@ -93,7 +93,7 @@ class CommentController extends ParentController
         $commentModel = new CommentModel();
         $comment = $commentModel->getComment($id_comment);
         $userModel = new UserModel();
-        if ($user->id == $comment->user->id || $userModel->isAdmin($user->id)) {
+        if ($user->id == $comment->user->id || $user->isAdmin()) {
             $commentModel = new CommentModel();
             $success = $commentModel->deleteComment($id_comment);
             if (!$success) {
@@ -123,7 +123,7 @@ class CommentController extends ParentController
         }
         if ($user !== null) {
             $userModel = new UserModel();
-            if ($userModel->isAdmin($user->id)) {
+            if ($user->isAdmin()) {
                 $commentModel = new CommentModel();
                 $success = $commentModel->valideComment($id_comment);
                 if (!$success) {
