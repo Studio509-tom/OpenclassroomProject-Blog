@@ -158,8 +158,14 @@ class UserModel
         );
         return $statement->fetch();
     }
-
-    public function isAdmin(string $id_user)
+    
+    /**
+     * isAdmin
+     *
+     * @param  string $id_user
+     * @return bool
+     */
+    public function isAdmin(string $id_user): bool
     {
         $statement = $this->connection->getConnection()->prepare(
             "SELECT * FROM users
@@ -167,7 +173,6 @@ class UserModel
             AND role = 'admin';"
         );
         $affectedLines = $statement->execute([$id_user]);
-        var_dump($affectedLines);
 
         return $affectedLines;
     }
