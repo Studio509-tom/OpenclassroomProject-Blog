@@ -10,17 +10,18 @@ class ManagementController extends ParentController
     /**
      * managementPage
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function managementPage(mixed $session_user): void
+    public function managementPage(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
+        
         $userModel = new UserModel();
         if ($user !== null) {
             if ($user->isAdmin()) {

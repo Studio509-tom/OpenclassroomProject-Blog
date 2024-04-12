@@ -6,54 +6,60 @@ use Application\Model\UserModel;
 use Application\ParentController;
 use Application\Model\ArticleModel;
 use Application\Model\CommentModel;
+use Exception;
 
 class ArticleController extends ParentController
 {
     /**
      * addArticlePage
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function addArticlePage(mixed $session_user): void
+    public function addArticlePage(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
-        echo $this->twig->render("create-article.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect]);
+        
+        $userModel = new UserModel();
+        $users = $userModel->getUsers();
+        echo $this->twig->render("create-article.html.twig", ['title' => "Article", "users" => $users, 'user' => $user, 'connect' => $connect]);
     }
 
 
     /**
      * addArticlePage
-     * @param mixed $session_user
      * @return void
      */
-    public function articlesPage(mixed $session_user): void
+    public function articlesPage(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
+        
         $articleModel = new ArticleModel();
         $articles = $articleModel->getArticles();
+
         echo $this->twig->render("articles.html.twig", ['title' => "Article", 'user' => $user, 'connect' => $connect, 'articles' => $articles]);
     }
 
     /**
      * modifyArticle
      *
-     * @param  mixed $session_user
      * @param  string $id_article
      * @return void
      */
-    public function modifyArticle(mixed $session_user, string $id_article): void
+    public function modifyArticle(string $id_article): void
     {
+        global $session_user;
         $input = $_POST;
         $user = null;
         $connect = false;
@@ -61,6 +67,7 @@ class ArticleController extends ParentController
             $user = $session_user;
             $connect = true;
         }
+        
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         if ($connect && ($input !== null)) {
@@ -70,14 +77,23 @@ class ArticleController extends ParentController
                     $chapo = htmlspecialchars($input["input-chapo"]);
                     $content = htmlspecialchars($input["input-content"]);
                     $author = $input["select-author"];
+                    if ($author == "") {
+                        throw new Exception('Une erreur est surevenu');
+                    }
                     $date_time_zone = new \DateTimeZone('Europe/Paris');
                     $date = new \DateTime('now', $date_time_zone);
-                    $articleModel = new ArticleModel();
-                    $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $author, $id_article);
-                    if (!$success) {
-                        throw new \Exception('Une erreur est surevenu');
+                    $userModel = new UserModel();
+                    $user_exist = $userModel->getUser($author);
+                    if (is_null($user_exist)) {
+                        $articleModel = new ArticleModel();
+                        $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $author, $id_article);
+                        if (!$success) {
+                            throw new Exception('Une erreur est surevenu');
+                        } else {
+                            header('Location: index.php?action=article&id-article=' . $id_article);
+                        }
                     } else {
-                        header('Location: index.php?action=article&id-article=' . $id_article);
+                        throw new Exception("L'utilisateur séléctionner n'éxiste pas");
                     }
                 }
             } else {
@@ -94,16 +110,19 @@ class ArticleController extends ParentController
     /**
      * deleteArticle
      *
-     * @param  mixed $session_user
      * @param  string $id_article
      * @return void
      */
-    public function deleteArticle(mixed $session_user, string $id_article): void
+    public function deleteArticle(string $id_article): void
     {
+        global $session_user;
         $user = null;
+        $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
+            $connect = true;
         }
+        
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         $userModel = new UserModel();
@@ -113,7 +132,7 @@ class ArticleController extends ParentController
             $commentModel = new CommentModel();
             $success_comment = $commentModel->deleteComment($id_article);
             if (!$success_article && !$success_comment) {
-                throw new \Exception('Une erreur est surevenu');
+                throw new Exception('Une erreur est surevenu');
             } else {
                 header('Location: index.php?action=articles');
             }
@@ -123,18 +142,19 @@ class ArticleController extends ParentController
     /**
      * articlePage
      *
-     * @param  mixed $session_user
      * @param  string $id_article
      * @return void
      */
-    public function articlePage(mixed $session_user, string $id_article, mixed $id_comment, string $message): void
+    public function articlePage(string $id_article, mixed $id_comment, string $message): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
+
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         $article->content = html_entity_decode($article->content);
@@ -145,7 +165,7 @@ class ArticleController extends ParentController
                 $id_comment = null;
             }
         }
-
+        $this->twigAddVariableJS('test', 'toto');
         echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article, 'message' => $message]);
     }
 
@@ -154,12 +174,12 @@ class ArticleController extends ParentController
     /**
      * modifyPage
      *
-     * @param  mixed $session_user
      * @param  string $id
      * @return void
      */
-    public function modifyPage(mixed $session_user, string $id_article): void
+    public function modifyPage(string $id_article): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
@@ -179,11 +199,11 @@ class ArticleController extends ParentController
     /**
      * addArticle
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function addArticle(mixed $session_user): void
+    public function addArticle(): void
     {
+        global $session_user;
         $input = $_POST;
         $user = null;
         $connect = false;
@@ -199,15 +219,28 @@ class ArticleController extends ParentController
                     $title = $input["input-title"];
                     $chapo = $input["input-chapo"];
                     $content = htmlspecialchars($input["input-content"]);
-                    $author = $user->id;
+                    if ($user->isAdmin()) {
+                        $author = $input["select-author"];
+                        if ($author == '') {
+                            throw new Exception('Une erreur est surevenu');
+                        }
+                    } else {
+                        $author = $user->id;
+                    }
                     $date_time_zone = new \DateTimeZone('Europe/Paris');
                     $date = new \DateTime('now', $date_time_zone);
-                    $articleModel = new ArticleModel();
-                    $success = $articleModel->addArticle($title, $chapo, $content, $author, $date->format("Y/m/d H:i:s"));
-                    if (!$success) {
-                        throw new \Exception('Une erreur est surevenu');
+                    $userModel = new UserModel();
+                    $user_exist = $userModel->getUser($author);
+                    if (is_null($user_exist)) {
+                        $articleModel = new ArticleModel();
+                        $success = $articleModel->addArticle($title, $chapo, $content, $author, $date->format("Y/m/d H:i:s"));
+                        if (!$success) {
+                            throw new Exception('Une erreur est surevenu');
+                        } else {
+                            header('Location: index.php?action=articles');
+                        }
                     } else {
-                        header('Location: index.php?action=articles');
+                        throw new Exception("L'ustilisateur séléctionner n'éxiste pas.");
                     }
                 }
             } else {
@@ -221,29 +254,28 @@ class ArticleController extends ParentController
     /**
      * managementArticles
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function managementArticles(mixed $session_user): void
-    { {
-            $user = null;
-            $connect = false;
-            if ($session_user !== null) {
-                $user = $session_user;
-                $connect = true;
-            }
-            if ($user !== null) {
-                $userModel = new UserModel();
-                if ($user->isAdmin()) {
-                    $articlesModel = new ArticleModel();
-                    $articles = $articlesModel->getArticles();
-                    echo $this->twig->render("management-articles.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "articles" => $articles, 'connect' => $connect]);
-                } else {
-                    throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
-                }
+    public function managementArticles(): void
+    {
+        global $session_user;
+        $user = null;
+        $connect = false;
+        if ($session_user !== null) {
+            $user = $session_user;
+            $connect = true;
+        }
+        if ($user !== null) {
+            $userModel = new UserModel();
+            if ($user->isAdmin()) {
+                $articlesModel = new ArticleModel();
+                $articles = $articlesModel->getArticles();
+                echo $this->twig->render("management-articles.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "articles" => $articles, 'connect' => $connect]);
             } else {
-                throw new \Exception("Vous n'êtes pas autorisé acceder à cette page");
+                throw new Exception("Vous n'êtes pas autorisé acceder à cette page");
             }
+        } else {
+            throw new Exception("Vous n'êtes pas autorisé acceder à cette page");
         }
     }
 }

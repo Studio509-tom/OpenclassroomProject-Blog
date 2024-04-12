@@ -8,6 +8,8 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 	</head>
 
 	<body class="raleway-body">
@@ -70,64 +72,70 @@
 				</ul>
 			</div>
 		</div>
-		<main>
-			{% block content %}{% endblock %}
-		</main>
-		<div class="footer">
-			<div class="container">
-				<div class="row ">
-					<div class="col-4 mt-4 text-center">
-						<div>
-							<p>
-								<b>Contact</b>
-							</p>
-						</div>
-						<div>
-							<p>Tel: 0760180059</p>
-							<p>Mail: tom@studio509.fr</p>
-						</div>
-					</div>
-					<div class="col-4 mt-4 text-center">
-						<div>
-							<p>
-								<b>Adresse</b>
-							</p>
-						</div>
-						<div>
-							<p>630 route de cos</p>
-							<p>82350 Albias</p>
-						</div>
-					</div>
-					<div class="col-4 mt-4 text-center">
-						<div>
-							<p>
-								<b>Résaux</b>
-							</p>
-						</div>
-						<div class="row">
-							<div class="col-4 text-center">
-								<a class="icon-social-footer">
-									<i class="i-footer fa-brands fa-x-twitter"></i>
-								</a>
-								<p class="mt-4">Twitter</p>
+		<main class="main"> {% block content %}{% endblock %}
+			</main>
+			<div class="footer">
+				<div class="container">
+					<div class="row ">
+						<div class="col-4 mt-4 text-center">
+							<div>
+								<p>
+									<b>Contact</b>
+								</p>
 							</div>
-							<div class="col-4 text-center">
-								<a class="icon-social-footer">
-									<i class="i-footer fa-brands fa-linkedin-in"></i>
-								</a>
-								<p class="mt-4">Linkdin</p>
+							<div>
+								<p>Tel: 0760180059</p>
+								<p>Mail: tom@studio509.fr</p>
 							</div>
-							<div class="col-4 text-center">
-								<a class="icon-social-footer">
-									<i class="i-footer fa-brands fa-github"></i>
-								</a>
-								<p class="mt-4">Github</p>
+						</div>
+						<div class="col-4 mt-4 text-center">
+							<div>
+								<p>
+									<b>Adresse</b>
+								</p>
+							</div>
+							<div>
+								<p>630 route de cos</p>
+								<p>82350 Albias</p>
+							</div>
+						</div>
+						<div class="col-4 mt-4 text-center">
+							<div>
+								<p>
+									<b>Résaux</b>
+								</p>
+							</div>
+							<div class="row">
+								<div class="col-4 text-center">
+									<a class="icon-social-footer">
+										<i class="i-footer fa-brands fa-x-twitter"></i>
+									</a>
+									<p class="mt-4">Twitter</p>
+								</div>
+								<div class="col-4 text-center">
+									<a class="icon-social-footer">
+										<i class="i-footer fa-brands fa-linkedin-in"></i>
+									</a>
+									<p class="mt-4">Linkdin</p>
+								</div>
+								<div class="col-4 text-center">
+									<a class="icon-social-footer">
+										<i class="i-footer fa-brands fa-github"></i>
+									</a>
+									<p class="mt-4">Github</p>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	</body>
-</html></body></html>
+
+			{% for variable_js in variables_js %}
+				{{ variable_js|raw }}
+			{% endfor %}
+
+			<script type="text/javascript" src="./script.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+		</body>
+	</html>
+</body></html>

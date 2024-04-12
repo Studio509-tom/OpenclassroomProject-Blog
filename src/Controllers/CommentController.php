@@ -6,22 +6,26 @@ use Application\Model\CommentModel;
 use Application\Model\UserModel;
 use Application\ParentController;
 use Application\Controllers\c;
+
 class CommentController extends ParentController
 {
     /**
      * addComment
      *
-     * @param  mixed $session_user
      * @param  string $id_article
      * @return void
      */
-    public function addComment(mixed $session_user, string $id_article): void
+    public function addComment(string $id_article): void
     {
+        global $session_user;
         $input = $_POST;
         $user = null;
+        $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
+            $connect = true;
         }
+        
         if ($user !== null) {
             if (!empty($input["comment"])) {
                 $content = htmlspecialchars($input["comment"]);
@@ -32,7 +36,7 @@ class CommentController extends ParentController
                     throw new \Exception('Une erreur est surevenu');
                 } else {
                     $articleController = new ArticleController();
-                    $articleController->articlePage($session_user,$id_article,null,$message);
+                    $articleController->articlePage($id_article, null, $message);
                 }
             }
         } else {
@@ -42,19 +46,22 @@ class CommentController extends ParentController
     /**
      * modifyComment
      *
-     * @param  mixed $session_user
      * @param  string $id_comment
      * @param  string $id_article
      * @return void
      */
-    public function modifyComment(mixed $session_user, string $id_comment, string $id_article): void
+    public function modifyComment(string $id_comment, string $id_article): void
     {
+        global $session_user;
         $success = false;
         $input = $_POST;
         $user = null;
+        $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
+            $connect = true;
         }
+        
         $commentModel = new CommentModel();
         $comment = $commentModel->getComment($id_comment);
         if ($user->id == $comment->user->id) {
@@ -77,19 +84,22 @@ class CommentController extends ParentController
     /**
      * deleteComment
      *
-     * @param  mixed $session_user
      * @param  string $id_comment
      * @param  string $id_article
      * @return void
      */
-    public function deleteComment(mixed $session_user, string $id_comment, string $id_article): void
+    public function deleteComment(string $id_comment, string $id_article): void
     {
+        global $session_user;
         $success = false;
         $input = $_POST;
         $user = null;
+        $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
+            $connect = true;
         }
+        
         $commentModel = new CommentModel();
         $comment = $commentModel->getComment($id_comment);
         $userModel = new UserModel();
@@ -109,18 +119,22 @@ class CommentController extends ParentController
     /**
      * valideComment
      *
-     * @param  mixed $session_user
      * @param  string $id_comment
      * @param  string $id_article
      * @return void
      */
-    public function valideComment(mixed $session_user, string $id_comment, string $id_article): void
+    public function valideComment(string $id_comment, string $id_article): void
     {
+        global $session_user;
         $success = false;
         $user = null;
+        $user = null;
+        $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
+            $connect = true;
         }
+        
         if ($user !== null) {
             $userModel = new UserModel();
             if ($user->isAdmin()) {

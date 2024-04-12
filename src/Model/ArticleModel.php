@@ -44,11 +44,13 @@ class ArticleModel
      * @param  string $chapo
      * @param  string $content
      * @param  string $date
+     * @param  string $author
      * @param  string $id
      * @return bool
      */
     public function modifyArticle(string $title, string $chapo, string $content, string $date,string $author ,string $id_article): bool
     {
+        
         $statement = $this->connection->getConnection()->prepare(
             'UPDATE articles SET title = ?, chapo = ?, content = ?,author = ?, date_creation = ? WHERE id = ?'
         );

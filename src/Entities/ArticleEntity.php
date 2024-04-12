@@ -21,7 +21,7 @@ class ArticleEntity
      */
     public function hasAuthor():bool
     {
-        if($this->author !== null){
+        if($this->author == null){
             return true;
         }else{
             return false;

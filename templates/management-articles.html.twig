@@ -18,10 +18,10 @@
 				</div>
 				<div class="col-2">
 					{% if article.hasAuthor() %}
+						<p class="inline">Utilisateur supprimé</p>
+					{% else %}
 						<p class="inline">{{article.author.name}}
 							{{article.author.firstname}}</p>
-					{% else %}
-						<p class="inline">Utilisateur supprimé</p>
 
 					{% endif %}
 

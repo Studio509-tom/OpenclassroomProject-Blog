@@ -26,7 +26,7 @@
 					<p class="inline">{{user.email}}</p>
 				</div>
 				<div class="col-3 form-role">
-					<form class="inline" action="index.php?action=change-role&email_user={{user.email}}" method="post">
+					<form class="inline" action="index.php?action=change-role&id_user={{user.id}}" method="post">
 
 						{% if user.isAdmin() %}
 							<select name="select-role">

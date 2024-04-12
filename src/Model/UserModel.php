@@ -39,10 +39,38 @@ class UserModel
     /**
      * Récupère l'utilisateur en base de donnée
      *
-     * @param  string $email
+     * @param  string $id_user
      * @return mixed 
      */
-    public function getUser($email)
+    public function getUser(string $id_user) : mixed
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'SELECT * FROM users WHERE user_id = ?'
+        );
+        $statement->execute([$id_user]);
+        //Utilisation du fetch pour voir chacune des donné de notre tableau
+        $row = $statement->fetch();
+        if ($row === false) {
+            return null;
+        }
+        $user = new UserEntity;
+        $user->id = $row['user_id'];
+        $user->name = $row['name'];
+        $user->firstname = $row['firstname'];
+        $user->email = $row['email'];
+        $user->role = $row['role'];
+        $user->password = $row['password'];
+
+
+        return $user;
+    }    
+    /**
+     * checkedUser
+     *
+     * @param  string $email
+     * @return mixed
+     */
+    public function checkedUser(string $email): mixed
     {
         $statement = $this->connection->getConnection()->prepare(
             'SELECT * FROM users WHERE email = ?'
@@ -91,19 +119,19 @@ class UserModel
     /**
      * modifyRole
      *
-     * @param  string $email_user
+     * @param  string $user_id
      * @param  string $new_value_admin
      * @return bool
      */
-    public function modifyRole(string $email_user, string $new_value_admin): bool
+    public function modifyRole(string $user_id, string $new_value_admin): bool
     {
         $statement = $this->connection->getConnection()->prepare(
             "UPDATE users
             SET role = ?
-            WHERE email = ?;"
+            WHERE user_id = ?;"
         );
 
-        $affectedLines = $statement->execute([$new_value_admin, $email_user]);
+        $affectedLines = $statement->execute([$new_value_admin, $user_id]);
         return ($affectedLines > 0);
     }
 
@@ -152,9 +180,9 @@ class UserModel
     public function checkAdmin(): mixed
     {
         $statement = $this->connection->getConnection()->query(
-            "SELECT COUNT(*) AS numbre_admin
+            "SELECT COUNT(*) AS number_admin
             FROM users
-            WHERE role = 'admin';"
+            WHERE role = 'admin'"
         );
         return $statement->fetch();
     }

@@ -10,29 +10,31 @@ class HomepageController extends ParentController
     /**
      * Retourne la page d'accueil
      *
-     * @param mixed $session_user 
      * @return void
      */
-    public function homepage(mixed $session_user): void
+    public function homepage(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
-        echo $this->twig->render("homepage.html.twig", ['title' => 'Accueil', 'user' => $user, 'connect' => $connect]);
+        
+        echo $this->twig->render("homepage.html.twig", ['title' => 'Accueil', 'user' => $user, 'connect' => $connect ]);
     }
 
     /**
      * errorPage
      *
-     * @param  mixed $session_user
      * @param  string $errorMessage
      * @return void
      */
-    public function errorPage(mixed $session_user, string $errorMessage): void
+    public function errorPage(string $errorMessage): void
     {
+        global $session_user;
+
         $user = null;
         $connect = false;
         if ($session_user !== null) {
@@ -45,11 +47,12 @@ class HomepageController extends ParentController
     /**
      * sendMail
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function sendMail(mixed $session_user): void
+    public function sendMail(): void
     {
+        global $session_user;
+
         $user = null;
         $connect = false;
         if ($session_user !== null) {
@@ -111,18 +114,19 @@ class HomepageController extends ParentController
     /**
      * confirmForm
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function confirmForm(mixed $session_user): void
+    public function confirmForm(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
-
+        
         echo $this->twig->render('confirmForm.html.twig', ['title' => 'Confirmation', 'connect' => $connect, 'user' => $user]);
     }
+
 }

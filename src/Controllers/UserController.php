@@ -15,6 +15,14 @@ class UserController extends ParentController
      */
     public function registerPage(): void
     {
+        global $session_user;
+        $user = null;
+        $connect = false;
+        if ($session_user !== null) {
+            $user = $session_user;
+            $connect = true;
+        }
+        
         $twig = $this->twig;
         echo $twig->render("register.html.twig", ['title' => 'Enregistrement']);
     }
@@ -23,14 +31,16 @@ class UserController extends ParentController
      *@param mixed $session_user
      * @return void
      */
-    public function loginPage(mixed $session_user): void
+    public function loginPage(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
+        
         if ($user === null) {
             $twig = $this->twig;
             echo $twig->render("login.html.twig", ['title' => 'Connexion']);
@@ -46,11 +56,19 @@ class UserController extends ParentController
      */
     public function register(): void
     {
+        global $session_user;
         $input = $_POST;
         $name = null;
         $firstname = null;
         $email = null;
         $password_hash = null;
+        $user = null;
+        $connect = false;
+        if ($session_user !== null) {
+            $user = $session_user;
+            $connect = true;
+        }
+        
         //Vérification si les input ne sont pas vide
         if ($input !== null) {
 
@@ -71,11 +89,11 @@ class UserController extends ParentController
                 }
                 //Vérifier le password
                 $userModel = new UserModel();
-                $cheked_email = $userModel->getUser($email);
+                $cheked_email = $userModel->checkedUser($email);
                 // Si email n'est pas en base de données
                 if ($cheked_email === null) {
                     $userModel->addUser($name, $firstname, $email, $password_hash);
-                    $user = $userModel->getUser($email);
+                    $user = $userModel->checkedUser($email);
                     $user->password = null;
                     $_SESSION['user'] = $user;
                     header('Location: index.php');
@@ -98,6 +116,14 @@ class UserController extends ParentController
      */
     public function login(): void
     {
+        global $session_user;
+        $user = null;
+        $connect = false;
+        if ($session_user !== null) {
+            $user = $session_user;
+            $connect = true;
+        }
+        
         $input = $_POST;
         $email = null;
         if ($input !== null) {
@@ -107,7 +133,7 @@ class UserController extends ParentController
                 } else {
                     $email = $input['input-email'];
                     $user_model = new UserModel();
-                    $user = $user_model->getUser($email);
+                    $user = $user_model->checkedUser($email);
                     if ($user === null) {
                         echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
                     } else {
@@ -131,17 +157,18 @@ class UserController extends ParentController
     /**
      * managementUser
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function managementUser(mixed $session_user): void
+    public function managementUser(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
+        
         if ($user !== null) {
             $userModel = new UserModel();
             if ($user->isAdmin()) {
@@ -158,12 +185,12 @@ class UserController extends ParentController
     /**
      * changeRole
      *
-     * @param  mixed $session_user
      * @param  string $email_user
      * @return void
      */
-    public function changeRole(mixed $session_user, string $email_user): void
+    public function changeRole(string $user_id): void
     {
+        global $session_user;
         $select = $_POST['select-role'];
         $user_session = null;
         $connect = false;
@@ -180,40 +207,51 @@ class UserController extends ParentController
         $userModel = new UserModel();
         if ($user_session->isAdmin()) {
             $userModel = new UserModel();
-            $user = $userModel->getUser($email_user);
+            $user = $userModel->getUser($user_id);
+            $users_model = new UserModel();
+            $number_admin = $users_model->checkAdmin();
+            
             if ($user->isAdmin() !== $role) {
-                $userModel = new UserModel();
-                $success = $userModel->modifyRole($email_user, $role);
-                if (!$success) {
-                    throw new \Exception('Une erreur est surevenu');
+                
+                if (intval($number_admin['number_admin']) > 1 || $select == "admin") {
+                    $userModel = new UserModel();
+                    $success = $userModel->modifyRole($user_id, $role);
+                    if (!$success) {
+                        throw new \Exception('Une erreur est surevenu');
+                    }
+                    if ($user_session->id == $user_id) {
+                        session_destroy();
+                        header('Location: index.php');
+                    } else {
+                        $this->managementUser();
+                    }
+                } else {
+                    $usersModel = new UserModel();
+                    $users = $usersModel->getUsers();
+                    echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect, 'errorDelete' => true]);
                 }
             }
 
-            if ($user_session->email == $email_user) {
-                session_destroy();
-                header('Location: index.php');
-            } else {
-
-                $this->managementUser($session_user);
-            }
+            
         }
     }
 
     /**
      * confirmDelete
      *
-     * @param  mixed $session_user
      * @param  string $id_user
      * @return void
      */
-    public function confirmDelete(mixed $session_user, string $id_user): void
+    public function confirmDelete(string $id_user): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
+        
         if ($user !== null) {
             if ($user->isAdmin()) {
                 $usersModel = new UserModel();
@@ -226,22 +264,26 @@ class UserController extends ParentController
     /**
      * deleteUser
      *
-     * @param  mixed $session_user
      * @param  string $id_user
      * @return void
      */
-    public function deleteUser(mixed $session_user, string $id_user): void
+    public function deleteUser(string $id_user): void
     {
+        global $session_user;
+
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
+        
         if ($user->isAdmin()) {
             $usersModel = new UserModel();
             $number_admin = $usersModel->checkAdmin();
-            if ($number_admin['numbre_admin'] !== "1") {
+            $user_model = new UserModel();
+            $user_model_delete = $user_model->getUser($id_user);
+            if (intval($number_admin['number_admin']) > 1 || $user_model_delete->role == 'user') {
                 $users_model = new UserModel();
                 $success = $users_model->deleteUser($id_user);
                 if (!$success) {
@@ -251,7 +293,7 @@ class UserController extends ParentController
                     header('Location: index.php');
                     session_destroy();
                 } else {
-                    $this->managementUser($session_user);
+                    $this->managementUser();
                 }
             } else {
                 $usersModel = new UserModel();
@@ -263,11 +305,11 @@ class UserController extends ParentController
     /**
      * profile
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function profile(mixed $session_user): void
+    public function profile(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
@@ -277,16 +319,18 @@ class UserController extends ParentController
         } else {
             throw new \Exception('Vous devez être connecté pour acceder à cette page');
         }
+
+        
     }
 
     /**
      * changePasswordForm
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function changePasswordForm(mixed $session_user): void
+    public function changePasswordForm(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
@@ -296,16 +340,17 @@ class UserController extends ParentController
         } else {
             throw new \Exception('Vous devez être connecté pour acceder à cette page');
         }
+        
     }
 
     /**
      * modifyPassword
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function modifyPassword(mixed $session_user): void
+    public function modifyPassword(): void
     {
+        global $session_user;
         $input = $_POST;
         $user = null;
         $connect = false;
@@ -313,13 +358,14 @@ class UserController extends ParentController
             $user = $session_user;
             $connect = true;
         }
-
+        
         if ($user === null) {
             throw new \Exception('Email inconnu');
         } else {
             $email = $user->email;
+            $user_id = $user->id;
             $user_model = new UserModel();
-            $userModel = $user_model->getUser($email);
+            $userModel = $user_model->getUser($user_id);
             $checked = password_verify($input['last-password'], $userModel->password);
             if ($checked && htmlspecialchars($input['new-password']) == htmlspecialchars($input['new-password-verify'])) {
                 $new_password_hash = password_hash(htmlspecialchars($input['new-password']), PASSWORD_DEFAULT, ['cost' => 12]);
@@ -336,42 +382,45 @@ class UserController extends ParentController
     /**
      * forgotPasswordPage
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function forgotPasswordPage(mixed $session_user): void
+    public function forgotPasswordPage(): void
     {
+        global $session_user;
         $user = null;
         $connect = false;
         if ($session_user !== null) {
             $user = $session_user;
             $connect = true;
         }
-
+        
 
         echo $this->twig->render("forgot-password.html.twig", ["title" => "Mots de passe oublié", 'user' => $user, 'connect' => $connect]);
     }
     /**
      * sendPassword
      *
-     * @param  mixed $session_user
      * @return void
      */
-    public function sendPassword(mixed $session_user): void
+    public function sendPassword(): void
     {
+        global $session_user;
         $input = $_POST;
-        $connect = false;
         $to = null;
+        $user = null;
+        $connect = false;
         if ($session_user !== null) {
+            $user = $session_user;
             $connect = true;
         }
+        
         if ($connect) {
             header('Location : index.php');
         } else {
             if ($input['input-email'] !== null) {
                 $email_input = $input['input-email'];
                 $user_model = new UserModel();
-                $user = $user_model->getUser($email_input);
+                $user = $user_model->checkedUser($email_input);
                 if ($user === null) {
                     echo $this->twig->render("forgot-password.html.twig", ["title" => "Mots de passe oublié", 'connect' => $connect, 'error' => true]);
                 } else {
