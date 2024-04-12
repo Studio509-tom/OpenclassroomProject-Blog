@@ -30,8 +30,16 @@ class ParentController
         $this->twigAddVariableJS('connect', $connect, TRUE);
         $this->twigAddVariableJS('is_admin', $is_admin, TRUE);
     }
-
-    public function twigAddVariableJS($name, $value, $json_encode = TRUE)
+    
+    /**
+     * twigAddVariableJS
+     *
+     * @param  string $name
+     * @param  mixed $value
+     * @param  bool $json_encode
+     * @return void
+     */
+    public function twigAddVariableJS(string $name,mixed $value,bool $json_encode = TRUE):void
     {
         if ($json_encode) {
             $value = json_encode($value);
@@ -40,15 +48,4 @@ class ParentController
         $this->twig->addGlobal('variables_js', $this->variables_js);
     }
 
-    // public function get_javascript($connect, $user)
-    // {
-    //     echo "<script> var connect = " . json_encode($connect) . "</script>";
-    //     if (!is_null($user)) {
-    //         if ($user->role == "admin") {
-    //             echo "<script> var is_admin = " . json_encode($user->role) . "</script>";
-    //         }
-    //     } else {
-    //         echo "<script> var is_admin = " . json_encode(false) . "</script>";
-    //     }
-    // }
 }
