@@ -14,11 +14,10 @@ class HomepageController extends ParentController
      */
     public function homepage(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -33,12 +32,10 @@ class HomepageController extends ParentController
      */
     public function errorPage(string $errorMessage): void
     {
-        global $session_user;
-
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         echo $this->twig->render('error.html.twig', ['error' => $errorMessage, 'title' => 'Erreur', 'connect' => $connect, 'user' => $user]);
@@ -51,12 +48,10 @@ class HomepageController extends ParentController
      */
     public function sendMail(): void
     {
-        global $session_user;
-
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         $mail_recipient = 'tomtfc8200@gmail.com';
@@ -118,11 +113,10 @@ class HomepageController extends ParentController
      */
     public function confirmForm(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         

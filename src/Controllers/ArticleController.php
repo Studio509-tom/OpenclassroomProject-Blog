@@ -17,11 +17,10 @@ class ArticleController extends ParentController
      */
     public function addArticlePage(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -37,11 +36,10 @@ class ArticleController extends ParentController
      */
     public function articlesPage(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -59,12 +57,11 @@ class ArticleController extends ParentController
      */
     public function modifyArticle(string $id_article): void
     {
-        global $session_user;
         $input = $_POST;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -115,11 +112,10 @@ class ArticleController extends ParentController
      */
     public function deleteArticle(string $id_article): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -147,11 +143,10 @@ class ArticleController extends ParentController
      */
     public function articlePage(string $id_article, mixed $id_comment, string $message): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
 
@@ -179,11 +174,10 @@ class ArticleController extends ParentController
      */
     public function modifyPage(string $id_article): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         $articleModel = new ArticleModel();
@@ -203,12 +197,11 @@ class ArticleController extends ParentController
      */
     public function addArticle(): void
     {
-        global $session_user;
         $input = $_POST;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         if ($connect && ($input !== null)) {
@@ -258,11 +251,10 @@ class ArticleController extends ParentController
      */
     public function managementArticles(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         if ($user !== null) {

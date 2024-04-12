@@ -17,12 +17,11 @@ class CommentController extends ParentController
      */
     public function addComment(string $id_article): void
     {
-        global $session_user;
         $input = $_POST;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -52,13 +51,12 @@ class CommentController extends ParentController
      */
     public function modifyComment(string $id_comment, string $id_article): void
     {
-        global $session_user;
         $success = false;
         $input = $_POST;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -90,13 +88,12 @@ class CommentController extends ParentController
      */
     public function deleteComment(string $id_comment, string $id_article): void
     {
-        global $session_user;
         $success = false;
         $input = $_POST;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -125,13 +122,11 @@ class CommentController extends ParentController
      */
     public function valideComment(string $id_comment, string $id_article): void
     {
-        global $session_user;
         $success = false;
         $user = null;
-        $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         

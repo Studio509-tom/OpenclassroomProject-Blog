@@ -15,11 +15,10 @@ class UserController extends ParentController
      */
     public function registerPage(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -33,11 +32,10 @@ class UserController extends ParentController
      */
     public function loginPage(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -56,7 +54,6 @@ class UserController extends ParentController
      */
     public function register(): void
     {
-        global $session_user;
         $input = $_POST;
         $name = null;
         $firstname = null;
@@ -64,8 +61,8 @@ class UserController extends ParentController
         $password_hash = null;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -116,11 +113,10 @@ class UserController extends ParentController
      */
     public function login(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -161,11 +157,10 @@ class UserController extends ParentController
      */
     public function managementUser(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -190,7 +185,6 @@ class UserController extends ParentController
      */
     public function changeRole(string $user_id): void
     {
-        global $session_user;
         $select = $_POST['select-role'];
         $user_session = null;
         $connect = false;
@@ -200,8 +194,9 @@ class UserController extends ParentController
         } else {
             $role = 'user';
         }
-        if ($session_user !== null) {
-            $user_session = $session_user;
+        
+        if (isset($_SESSION['user'])) {
+            $user_session = $_SESSION['user'];
             $connect = true;
         }
         $userModel = new UserModel();
@@ -244,11 +239,10 @@ class UserController extends ParentController
      */
     public function confirmDelete(string $id_user): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -269,12 +263,10 @@ class UserController extends ParentController
      */
     public function deleteUser(string $id_user): void
     {
-        global $session_user;
-
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -309,11 +301,10 @@ class UserController extends ParentController
      */
     public function profile(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
             echo $this->twig->render("profile.html.twig", ["title" => "Mon profile", 'user' => $user, 'connect' => $connect]);
         } else {
@@ -330,11 +321,10 @@ class UserController extends ParentController
      */
     public function changePasswordForm(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
             echo $this->twig->render("change-password-form.html.twig", ["title" => "Mon profile", 'user' => $user, 'connect' => $connect]);
         } else {
@@ -350,12 +340,11 @@ class UserController extends ParentController
      */
     public function modifyPassword(): void
     {
-        global $session_user;
         $input = $_POST;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -386,11 +375,10 @@ class UserController extends ParentController
      */
     public function forgotPasswordPage(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
@@ -404,13 +392,12 @@ class UserController extends ParentController
      */
     public function sendPassword(): void
     {
-        global $session_user;
         $input = $_POST;
         $to = null;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         

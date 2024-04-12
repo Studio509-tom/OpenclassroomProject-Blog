@@ -14,11 +14,10 @@ class ManagementController extends ParentController
      */
     public function managementPage(): void
     {
-        global $session_user;
         $user = null;
         $connect = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
             $connect = true;
         }
         
