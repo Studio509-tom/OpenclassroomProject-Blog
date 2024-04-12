@@ -13,12 +13,11 @@ class ParentController
             'cache' => false,
         ]);
 
-        global $session_user;
         $user = null;
         $connect = false;
         $is_admin = false;
-        if ($session_user !== null) {
-            $user = $session_user;
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];;
             $connect = true;
             $is_admin = true;
         }
