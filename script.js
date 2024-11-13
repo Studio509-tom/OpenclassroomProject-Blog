@@ -26,7 +26,7 @@ if(screen.width <= 992){
 
             if(connect){
                 div_nav_mobile.append(nav_add_article);
-                div_nav_mobile.append(nav_profile);
+                div_nav_mobile.append(nav_profile);                
                 div_nav_mobile.append(nav_disconnect);
             }else{
                 div_nav_mobile.append(nav_connection);
