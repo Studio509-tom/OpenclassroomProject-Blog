@@ -23,7 +23,7 @@ Dans Blog>OpenclassroomProject-Blog>src>Lib>DatabaseConnection.php ligne:15
 
 Voici quelques exemples d'utilisation :
 
-- Exemple 1 : Enregistrement d'un nouvelle utilisateur.
+- Exemple 1 : Enregistrement d'un nouvel utilisateur.
 - Exemple 2 : Création d'un article.
 - Exemple 3 : Création d'un commentaire.
 
