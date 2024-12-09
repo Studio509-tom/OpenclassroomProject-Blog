@@ -8,7 +8,7 @@ use Application\Model\UserModel;
 class ManagementController extends ParentController
 {
     /**
-     * managementPage
+     * Retourne la page de gestion 
      *
      * @return void
      */
@@ -23,6 +23,7 @@ class ManagementController extends ParentController
         
         $userModel = new UserModel();
         if ($user !== null) {
+            // Vérification si l'user à le role admin
             if ($user->isAdmin()) {
                 echo $this->twig->render("management.html.twig", ["title" => "Gestion du site", "user" => $user, 'connect' => $connect]);
             } else {

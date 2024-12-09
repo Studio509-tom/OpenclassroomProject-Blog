@@ -25,7 +25,7 @@ class HomepageController extends ParentController
     }
 
     /**
-     * errorPage
+     * Retourne la page d'erreur
      *
      * @param  string $errorMessage
      * @return void
@@ -73,8 +73,9 @@ class HomepageController extends ParentController
         if (empty($_POST['inputMessage'])) {
             $error_message = true;
         }
-
+        
         if (!$error_email && !$error_name && !$error_firstname && !$error_message) {
+            // Vérification des charactère rentrées
             if (!preg_match("/^[a-zA-Z ]*$/", $_POST["input-name"]) || !preg_match("/^[a-zA-Z ]*$/", $_POST["input-firstname"]) || !preg_match("/^[a-z0-9_-]+((\.[a-z0-9_-]+){1,})?@[a-z0-9_-]+((\.[a-z0-9_-]+){1,})?\.[a-z]{2,}$/i", $_POST['inputEmail'])) {
                 echo $this->twig->render('homepage.html.twig', ['title' => 'Accueil', 'success' => false, 'connect' => $connect, 'user' => $user]);
             } else {
@@ -92,6 +93,7 @@ class HomepageController extends ParentController
                 $subject = "Contact";
                 $message = htmlspecialchars($_POST['inputMessage']);
                 $message = nl2br($message);
+                // Envoie du mail
                 $success = mail($mail_recipient, $subject, $message, $headers);
 
                 if (!$success) {
@@ -107,7 +109,7 @@ class HomepageController extends ParentController
     }
 
     /**
-     * confirmForm
+     * Confirmatin de l'envoie du mail
      *
      * @return void
      */
