@@ -23,7 +23,7 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-        
+
         $userModel = new UserModel();
         $users = $userModel->getUsers();
         echo $this->twig->render("create-article.html.twig", ['title' => "Article", "users" => $users, 'user' => $user, 'connect' => $connect]);
@@ -42,7 +42,7 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-        
+
         $articleModel = new ArticleModel();
         $articles = $articleModel->getArticles();
 
@@ -64,12 +64,15 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-        
+
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
+
         if ($connect && ($input !== null)) {
             if (!empty($input["input-title"]) && !empty($input["input-chapo"])  && !empty($input["input-content"])) {
-                if ($user->id == $article->author->id || $user->isAdmin()) {
+
+                if ((isset($article->author) && $user->id == $article->author->id) || $user->isAdmin()) {
+                    
                     $title = htmlspecialchars($input["input-title"]);
                     $chapo = htmlspecialchars($input["input-chapo"]);
                     $content = htmlspecialchars($input["input-content"]);
@@ -81,12 +84,14 @@ class ArticleController extends ParentController
                     $date = new \DateTime('now', $date_time_zone);
                     $userModel = new UserModel();
                     $user_exist = $userModel->getUser($author);
-                    if (is_null($user_exist)) {
+                    
+                    if (!is_null($user_exist)) {
                         $articleModel = new ArticleModel();
                         $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $author, $id_article);
                         if (!$success) {
                             throw new Exception('Une erreur est surevenu');
                         } else {
+
                             header('Location: index.php?action=article&id-article=' . $id_article);
                         }
                     } else {
@@ -118,7 +123,7 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-        
+
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         $userModel = new UserModel();
@@ -160,7 +165,6 @@ class ArticleController extends ParentController
                 $id_comment = null;
             }
         }
-        $this->twigAddVariableJS('test', 'toto');
         echo $this->twig->render("article.html.twig", ['title' => "Article", 'modifyState' => $id_comment, 'comments' => $comments, 'user' => $user, 'connect' => $connect, 'article' => $article, 'message' => $message]);
     }
 
