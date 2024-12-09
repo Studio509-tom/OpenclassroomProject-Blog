@@ -122,18 +122,25 @@ class UserController extends ParentController
         
         $input = $_POST;
         $email = null;
+        // Si le POST n'est pas null
         if ($input !== null) {
+            // Si l'email et le mots de passe sont renseigné
             if (!empty($input["input-email"]) && !empty($input["inputPassword"])) {
                 if (!preg_match("/^[a-zA-Z0-9][^\s\<\>]*$/", $input["input-email"])) { //si c'est pas un mot
                     echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
                 } else {
+
                     $email = $input['input-email'];
                     $user_model = new UserModel();
+                    // Vérification de l'email 
                     $user = $user_model->checkedUser($email);
+                    // Si user non trouvé
                     if ($user === null) {
                         echo $this->twig->render("login.html.twig", ['title' => 'Connexion', 'error' => true]);
                     } else {
+                        // Vérification du mots de passe
                         $checked = password_verify($_POST['inputPassword'], $user->password);
+                        // Mots de passe valide
                         if ($checked) {
                             $user->password = "";
                             $_SESSION['user'] = $user;
@@ -166,8 +173,10 @@ class UserController extends ParentController
         
         if ($user !== null) {
             $userModel = new UserModel();
+            // Vérification si l'utilisateur à le role admin 
             if ($user->isAdmin()) {
                 $usersModel = new UserModel();
+                // Récupération de tout les utilisateurs du site 
                 $users = $usersModel->getUsers();
                 echo $this->twig->render("management-users.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "users" => $users, 'connect' => $connect]);
             } else {
@@ -178,23 +187,25 @@ class UserController extends ParentController
         }
     }
     /**
-     * changeRole
+     * Changement du role d'un utilisateur 
      *
      * @param  string $email_user
      * @return void
      */
     public function changeRole(string $user_id): void
     {
+        // Récupéré son rôle
         $select = $_POST['select-role'];
         $user_session = null;
         $connect = false;
         $role = null;
+
         if ($select == "admin") {
             $role = 'admin';
         } else {
             $role = 'user';
         }
-        
+        // Vérification de l'utilisateur qui change le rôle 
         if (isset($_SESSION['user'])) {
             $user_session = $_SESSION['user'];
             $connect = true;
@@ -232,7 +243,7 @@ class UserController extends ParentController
     }
 
     /**
-     * confirmDelete
+     * Confirmer la suppression de l'utilisateur 
      *
      * @param  string $id_user
      * @return void
@@ -256,7 +267,7 @@ class UserController extends ParentController
     }
 
     /**
-     * deleteUser
+     * Supprimer l'utilisateur 
      *
      * @param  string $id_user
      * @return void
@@ -269,18 +280,20 @@ class UserController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-        
+        // Vérification de l'user connecter
         if ($user->isAdmin()) {
             $usersModel = new UserModel();
             $number_admin = $usersModel->checkAdmin();
             $user_model = new UserModel();
             $user_model_delete = $user_model->getUser($id_user);
+            // Vérification du nombre restant d'admin 
             if (intval($number_admin['number_admin']) > 1 || $user_model_delete->role == 'user') {
                 $users_model = new UserModel();
                 $success = $users_model->deleteUser($id_user);
                 if (!$success) {
                     throw new \Exception('Une erreur est surevenu');
                 }
+                // Si l'utilisateur supprimer est l'utilisateur connecter forcer la déconnexion 
                 if ($user->id == $id_user) {
                     header('Location: index.php');
                     session_destroy();
@@ -295,7 +308,7 @@ class UserController extends ParentController
         }
     }
     /**
-     * profile
+     * Page de profile 
      *
      * @return void
      */
