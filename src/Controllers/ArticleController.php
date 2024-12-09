@@ -11,7 +11,7 @@ use Exception;
 class ArticleController extends ParentController
 {
     /**
-     * addArticlePage
+     * Page de l'ajout d'article 
      *
      * @return void
      */
@@ -31,7 +31,7 @@ class ArticleController extends ParentController
 
 
     /**
-     * addArticlePage
+     * Page des articles 
      * @return void
      */
     public function articlesPage(): void
@@ -42,7 +42,7 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-
+        // Récupération de tout les articles 
         $articleModel = new ArticleModel();
         $articles = $articleModel->getArticles();
 
@@ -50,7 +50,7 @@ class ArticleController extends ParentController
     }
 
     /**
-     * modifyArticle
+     * Modification de l'article 
      *
      * @param  string $id_article
      * @return void
@@ -64,13 +64,14 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-
+        // Récupération de l'article 
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
-
+        // Vérification si l'utilisateur est connecter
         if ($connect && ($input !== null)) {
+            // Vérification que les champs ne soit pas vide 
             if (!empty($input["input-title"]) && !empty($input["input-chapo"])  && !empty($input["input-content"])) {
-
+                // Vérification que l'utilisateur est l'autheur ou un admin 
                 if ((isset($article->author) && $user->id == $article->author->id) || $user->isAdmin()) {
                     
                     $title = htmlspecialchars($input["input-title"]);
@@ -80,12 +81,15 @@ class ArticleController extends ParentController
                     if ($author == "") {
                         throw new Exception('Une erreur est surevenu');
                     }
+                    // Récupération de la date du jour 
                     $date_time_zone = new \DateTimeZone('Europe/Paris');
                     $date = new \DateTime('now', $date_time_zone);
+                    // Récupération de l'autheur 
                     $userModel = new UserModel();
                     $user_exist = $userModel->getUser($author);
-                    
+                    // Vérification que l'autheur à était récupéré 
                     if (!is_null($user_exist)) {
+                        // Modification de l'article 
                         $articleModel = new ArticleModel();
                         $success = $articleModel->modifyArticle($title, $chapo, $content, $date->format("Y/m/d H:i:s"), $author, $id_article);
                         if (!$success) {
@@ -110,7 +114,7 @@ class ArticleController extends ParentController
     }
 
     /**
-     * deleteArticle
+     * Suppression de l'article 
      *
      * @param  string $id_article
      * @return void
@@ -123,13 +127,16 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-
+        // récupération de l'article 
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         $userModel = new UserModel();
+        // Si l'utilisateur est l'autheur ou un admin 
         if ($user->id == $article->author->id || $user->isAdmin()) {
+            // Suppression de l'article 
             $article_model = new ArticleModel();
             $success_article = $article_model->deleteArticle($id_article);
+            // Suppression des commentaire associé 
             $commentModel = new CommentModel();
             $success_comment = $commentModel->deleteComment($id_article);
             if (!$success_article && !$success_comment) {
@@ -141,7 +148,7 @@ class ArticleController extends ParentController
     }
 
     /**
-     * articlePage
+     * Page de l'article 
      *
      * @param  string $id_article
      * @return void
@@ -154,10 +161,11 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
-
+        // Récupérationde l'article 
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         $article->content = html_entity_decode($article->content);
+        // Récupération des commentaires de l'article 
         $commentModel = new CommentModel();
         $comments = $commentModel->getComments($id_article);
         if ($id_comment !== null) {
@@ -171,7 +179,7 @@ class ArticleController extends ParentController
 
 
     /**
-     * modifyPage
+     * Page de modification de l'article 
      *
      * @param  string $id
      * @return void
@@ -184,9 +192,11 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
+        // récupération de l'article
         $articleModel = new ArticleModel();
         $article = $articleModel->getArticle($id_article);
         $article->content = html_entity_decode($article->content);
+        // Récupéré les utilisateurs 
         $userModel = new UserModel();
         $users = $userModel->getUsers();
 
@@ -195,7 +205,7 @@ class ArticleController extends ParentController
 
 
     /**
-     * addArticle
+     * Ajout de l'article 
      *
      * @return void
      */
@@ -208,14 +218,19 @@ class ArticleController extends ParentController
             $user = $_SESSION['user'];
             $connect = true;
         }
+        // Si connecter 
         if ($connect && ($input !== null)) {
+            // Vérifier que les champs ne sois pas vide 
             if (!empty($input["input-title"]) && !empty($input["input-chapo"])  && !empty($input["input-content"])) {
+                // Vérifier le contenu des champs 
                 if ((!preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-title"]) || !preg_match("/^[a-zA-Z0-9 ]*$/", $input["input-chapo"]))) {
                     echo $this->twig->render("create-article.html.twig", ['title' => "Article",  'connect' => $connect, "user" => $user, "titleArticle" => $input["input-title"], "chapo" => $input["input-chapo"], "content" => $input["input-content"], 'error' => true]);
                 } else {
+                    // Récupération des inputs 
                     $title = $input["input-title"];
                     $chapo = $input["input-chapo"];
                     $content = htmlspecialchars($input["input-content"]);
+                    // Vérification si l'utilisateur est admin 
                     if ($user->isAdmin()) {
                         $author = $input["select-author"];
                         if ($author == '') {
@@ -224,11 +239,14 @@ class ArticleController extends ParentController
                     } else {
                         $author = $user->id;
                     }
+                    // Récupération de la date d'ajourd'hui
                     $date_time_zone = new \DateTimeZone('Europe/Paris');
                     $date = new \DateTime('now', $date_time_zone);
+                    // Récupération de l'autheur
                     $userModel = new UserModel();
                     $user_exist = $userModel->getUser($author);
                     if (is_null($user_exist)) {
+                        // Ajouter l'article
                         $articleModel = new ArticleModel();
                         $success = $articleModel->addArticle($title, $chapo, $content, $author, $date->format("Y/m/d H:i:s"));
                         if (!$success) {
@@ -249,7 +267,7 @@ class ArticleController extends ParentController
     }
 
     /**
-     * managementArticles
+     * Gestions des articles 
      *
      * @return void
      */
@@ -263,7 +281,9 @@ class ArticleController extends ParentController
         }
         if ($user !== null) {
             $userModel = new UserModel();
+            // vérification si l'utilisateur est admin
             if ($user->isAdmin()) {
+                // Récupération des articles 
                 $articlesModel = new ArticleModel();
                 $articles = $articlesModel->getArticles();
                 echo $this->twig->render("management-articles.html.twig", ["title" => "Gestion utilisateurs", 'user' => $user, "articles" => $articles, 'connect' => $connect]);
