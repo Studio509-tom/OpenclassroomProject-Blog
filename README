@@ -32,3 +32,5 @@ Voici quelques exemples d'utilisation :
 - Assurez-vous d'avoir la version 1.0 de twig d'installer 
 - Assurez-vous d'avoir composer d'installer.
 - Assurez-vous d'avoir un gestionnaire de mail d'installer si vous utiliser se projet en local (sendmail est conseiller).
+
+Codacy Badge
