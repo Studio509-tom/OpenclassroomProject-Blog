@@ -23,7 +23,7 @@ class CommentModel extends ParentController
     }
 
     /**
-     * addComment
+     * Ajout d'un commentaire
      *
      * @param  string $content
      * @param  string $user_id
@@ -40,7 +40,7 @@ class CommentModel extends ParentController
     }
 
     /**
-     * getComments
+     * Récupération des commentaires
      *
      * @param  string $id
      * @return array
@@ -86,7 +86,7 @@ class CommentModel extends ParentController
     }
 
     /**
-     * getComment
+     * Récupération d'un commentaire
      *
      * @param  string $id_comment
      * @return mixed
@@ -129,7 +129,7 @@ class CommentModel extends ParentController
     }
 
     /**
-     * modifyComment
+     * Modification d'un commentaire
      *
      * @param  string $content
      * @param  string $id_comment
@@ -145,7 +145,7 @@ class CommentModel extends ParentController
     }
 
     /**
-     * deleteComment
+     * Suppression d'un commentaire
      *
      * @param  string $id_comment
      * @return bool
@@ -160,7 +160,7 @@ class CommentModel extends ParentController
     }
 
     /**
-     * deleteComments
+     * Suppression des commentaires
      *
      * @param  string $id_article
      * @return bool
@@ -175,7 +175,7 @@ class CommentModel extends ParentController
     }
 
     /**
-     * valideComment
+     * Validation d'un commentaire
      *
      * @param  string $id_comment
      * @return bool

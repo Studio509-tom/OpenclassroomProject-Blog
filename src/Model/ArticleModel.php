@@ -19,7 +19,7 @@ class ArticleModel
         $this->connection = new DatabaseConnection();
     }
     /**
-     * addArticle
+     * Ajout de l'article 
      *
      * @param  string $title
      * @param  string $chapo
@@ -38,7 +38,7 @@ class ArticleModel
     }
 
     /**
-     * modifyArticle
+     * Modification de l'article 
      *
      * @param  string $title
      * @param  string $chapo
@@ -60,7 +60,7 @@ class ArticleModel
     }
 
     /**
-     * deleteArticle
+     * Suppression de l'article
      *
      * @param  mixed $id
      * @return bool
@@ -78,7 +78,7 @@ class ArticleModel
 
 
     /**
-     * getArticles
+     * Récupération des articles
      *
      * @return array
      */
@@ -117,7 +117,7 @@ class ArticleModel
         return $articles;
     }
     /**
-     * getArticle
+     * Récupération d'un article
      *
      * @param  string $id
      * @return mixed

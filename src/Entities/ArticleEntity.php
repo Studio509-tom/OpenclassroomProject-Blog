@@ -15,7 +15,7 @@ class ArticleEntity
     public string $date;
     
     /**
-     * hasAuthor
+     * Vérification de l'autheur
      *
      * @return bool
      */

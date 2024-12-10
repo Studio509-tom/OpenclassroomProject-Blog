@@ -13,7 +13,7 @@ class UserEntity
     public $role;
 
     /**
-     * isAdmin
+     * Vérifier si l'user à le rôle admin
      *
      * @return bool
      */

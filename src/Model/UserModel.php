@@ -65,7 +65,7 @@ class UserModel
         return $user;
     }    
     /**
-     * checkedUser
+     * Vérification d'un utilisateur
      *
      * @param  string $email
      * @return mixed
@@ -93,7 +93,7 @@ class UserModel
         return $user;
     }
     /**
-     * getUsers
+     * Récupération de tout les utilisateurs
      *
      * @return array
      */
@@ -117,7 +117,7 @@ class UserModel
     }
 
     /**
-     * modifyRole
+     * Modification du role 
      *
      * @param  string $user_id
      * @param  string $new_value_admin
@@ -136,7 +136,7 @@ class UserModel
     }
 
     /**
-     * deleteUser
+     * Suppression de l'utilisateur
      *
      * @param  string $id_user
      * @return bool
@@ -154,7 +154,7 @@ class UserModel
     }
 
     /**
-     * modifyPassword
+     * Modification du mots de passe
      *
      * @param  string $new_password
      * @param  string $email_user
@@ -173,7 +173,7 @@ class UserModel
     }
 
     /**
-     * checkAdmin
+     * Vérification si admin 
      *
      * @return mixed
      */

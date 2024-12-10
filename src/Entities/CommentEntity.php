@@ -11,7 +11,7 @@ class CommentEntity
     public $article;
     
     /**
-     * isValidate
+     * Vérification que le commentaire sois valider
      *
      * @return bool
      */

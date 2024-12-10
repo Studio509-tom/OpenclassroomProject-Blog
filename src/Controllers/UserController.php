@@ -211,15 +211,18 @@ class UserController extends ParentController
             $connect = true;
         }
         $userModel = new UserModel();
+        // Vérification si le utilisateur connecter est admin 
         if ($user_session->isAdmin()) {
+            // Récupération de l'utilisateur
             $userModel = new UserModel();
             $user = $userModel->getUser($user_id);
+            // récupération du nombre d'admin restant 
             $users_model = new UserModel();
             $number_admin = $users_model->checkAdmin();
-            
             if ($user->isAdmin() !== $role) {
                 
                 if (intval($number_admin['number_admin']) > 1 || $select == "admin") {
+                    // Modifier le rôle
                     $userModel = new UserModel();
                     $success = $userModel->modifyRole($user_id, $role);
                     if (!$success) {
@@ -328,7 +331,7 @@ class UserController extends ParentController
     }
 
     /**
-     * changePasswordForm
+     * Formulaire de modificcation de mots de passe
      *
      * @return void
      */
@@ -347,7 +350,7 @@ class UserController extends ParentController
     }
 
     /**
-     * modifyPassword
+     * Modifier le mots de passe
      *
      * @return void
      */
@@ -366,11 +369,16 @@ class UserController extends ParentController
         } else {
             $email = $user->email;
             $user_id = $user->id;
+            // Récupération de l'utilisateur 
             $user_model = new UserModel();
             $userModel = $user_model->getUser($user_id);
+            // Vérification de l'ancien mots de passe
             $checked = password_verify($input['last-password'], $userModel->password);
+            // Si l'ancien mots de passe est correct et que le nouveau mots de passe identique sur les 2 champs
             if ($checked && htmlspecialchars($input['new-password']) == htmlspecialchars($input['new-password-verify'])) {
+                // hashage du password
                 $new_password_hash = password_hash(htmlspecialchars($input['new-password']), PASSWORD_DEFAULT, ['cost' => 12]);
+                // Modification du mots de passe
                 $user_model = new UserModel();
                 $success = $user_model->modifyPassword($new_password_hash, $email);
                 if (!$success) {
@@ -382,7 +390,7 @@ class UserController extends ParentController
         }
     }
     /**
-     * forgotPasswordPage
+     * Page du mots de passe oublié 
      *
      * @return void
      */
@@ -399,7 +407,7 @@ class UserController extends ParentController
         echo $this->twig->render("forgot-password.html.twig", ["title" => "Mots de passe oublié", 'user' => $user, 'connect' => $connect]);
     }
     /**
-     * sendPassword
+     * Envoie du mots de passe temporaires
      *
      * @return void
      */
@@ -417,18 +425,22 @@ class UserController extends ParentController
         if ($connect) {
             header('Location : index.php');
         } else {
+            // Vérifier que l'email sois saisie
             if ($input['input-email'] !== null) {
                 $email_input = $input['input-email'];
+                // Vérifier que l'utilisateur existe
                 $user_model = new UserModel();
                 $user = $user_model->checkedUser($email_input);
                 if ($user === null) {
                     echo $this->twig->render("forgot-password.html.twig", ["title" => "Mots de passe oublié", 'connect' => $connect, 'error' => true]);
                 } else {
                     $to = htmlspecialchars($input['input-email']);
+                    // Formatage du nouveau mots de passe
                     $bytes = openssl_random_pseudo_bytes(8);
                     $hex   = bin2hex($bytes);
                     $password_temporary = $hex;
                     $new_password_hash = password_hash($password_temporary, PASSWORD_DEFAULT, ['cost' => 12]);
+                    // Modifier le mots de passe actuelle 
                     $user_model = new UserModel();
                     $success = $user_model->modifyPassword($new_password_hash, $email_input);
                     if (!$success) {
