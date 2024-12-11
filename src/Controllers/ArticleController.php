@@ -73,7 +73,7 @@ class ArticleController extends ParentController
             if (!empty($input["input-title"]) && !empty($input["input-chapo"])  && !empty($input["input-content"])) {
                 // Vérification que l'utilisateur est l'autheur ou un admin 
                 if ((isset($article->author) && $user->id == $article->author->id) || $user->isAdmin()) {
-                    
+
                     $title = htmlspecialchars($input["input-title"]);
                     $chapo = htmlspecialchars($input["input-chapo"]);
                     $content = htmlspecialchars($input["input-content"]);
@@ -231,6 +231,7 @@ class ArticleController extends ParentController
                     $chapo = $input["input-chapo"];
                     $content = htmlspecialchars($input["input-content"]);
                     // Vérification si l'utilisateur est admin 
+                    var_dump($input["select-author"]);
                     if ($user->isAdmin()) {
                         $author = $input["select-author"];
                         if ($author == '') {
@@ -239,13 +240,15 @@ class ArticleController extends ParentController
                     } else {
                         $author = $user->id;
                     }
+                   
                     // Récupération de la date d'ajourd'hui
                     $date_time_zone = new \DateTimeZone('Europe/Paris');
                     $date = new \DateTime('now', $date_time_zone);
                     // Récupération de l'autheur
                     $userModel = new UserModel();
                     $user_exist = $userModel->getUser($author);
-                    if (is_null($user_exist)) {
+                   
+                    if (!is_null($user_exist)) {
                         // Ajouter l'article
                         $articleModel = new ArticleModel();
                         $success = $articleModel->addArticle($title, $chapo, $content, $author, $date->format("Y/m/d H:i:s"));
